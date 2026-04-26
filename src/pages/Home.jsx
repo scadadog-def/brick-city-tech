@@ -69,7 +69,7 @@ export default function Home() {
           </Link>
           <Link to="/ocala" className="bg-zinc-900/40 border border-zinc-800 p-8 hover:border-cyan-400 transition-colors">
             <div className="font-mono text-zinc-500 text-xs">[ OCALA ]</div>
-            <div className="font-['Space_Grotesk'] text-[24px] font-semibold mt-2">Ocala in 5 years</div>
+            <div className="font-['Space_Grotesk'] text-[24px] font-semibold mt-2">Ocala’s Greatest Challenges</div>
             <div className="text-zinc-400 mt-1">Problem statement + references.</div>
           </Link>
           <Link to="/sponsors" className="bg-zinc-900/40 border border-zinc-800 p-8 hover:border-cyan-400 transition-colors">

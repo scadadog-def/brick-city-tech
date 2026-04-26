@@ -9,7 +9,7 @@ export default function Ocala() {
           <div className="h-px flex-grow bg-zinc-800" />
         </div>
         <h1 className="font-['Space_Grotesk'] text-[48px] leading-[1.1] tracking-[-0.02em] font-bold text-zinc-100 uppercase mb-4">
-          Ocala in the Age of AI
+Ocala’s Greatest Challenges
         </h1>
         <p className="max-w-2xl text-zinc-400">
           Brick City Tech’s read of the next 5 years: risks, gaps, and what we’re building.
