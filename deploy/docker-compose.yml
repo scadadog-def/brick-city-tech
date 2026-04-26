@@ -1,0 +1,36 @@
+services:
+  api:
+    build:
+      context: ./api
+    environment:
+      # Change on other servers as needed
+      BASE_PATH: /brick-city-tech
+      PORT: 8787
+      DATABASE_PATH: /data/bct.sqlite
+      # Auth / email (fill in later)
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET:-}
+      ADMIN_EMAIL_ALLOWLIST: ${ADMIN_EMAIL_ALLOWLIST:-Hector.Lopez@scadadog.com}
+      SESSION_SECRET: ${SESSION_SECRET:-change-me}
+      SMTP_HOST: ${SMTP_HOST:-}
+      SMTP_PORT: ${SMTP_PORT:-}
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASS: ${SMTP_PASS:-}
+      SMTP_FROM: ${SMTP_FROM:-}
+      PUBLIC_BASE_URL: ${PUBLIC_BASE_URL:-https://claw.hectorlopez.cloud}
+    volumes:
+      - bct_data:/data
+    restart: unless-stopped
+
+  web:
+    build:
+      context: .
+      dockerfile: deploy/Dockerfile.web
+    depends_on:
+      - api
+    ports:
+      - "8088:80"
+    restart: unless-stopped
+
+volumes:
+  bct_data:
