@@ -2,6 +2,7 @@ import Fastify from 'fastify'
 import { ensureSchema, openDb } from './db.js'
 import { registerPodcastRoutes } from './podcast.js'
 import { registerMemberRoutes } from './members.js'
+import { registerAuth } from './auth.js'
 
 const PORT = Number(process.env.PORT || 8787)
 const BASE_PATH = process.env.BASE_PATH || '/brick-city-tech'
@@ -33,9 +34,17 @@ app.get('/info', async () => {
 })
 
 const env = {
+  BASE_PATH,
+  PUBLIC_BASE_URL: process.env.PUBLIC_BASE_URL,
+  ADMIN_EMAIL_ALLOWLIST: process.env.ADMIN_EMAIL_ALLOWLIST,
+  SESSION_SECRET: process.env.SESSION_SECRET,
+  GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
+  GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
   SMTP_HOST: process.env.SMTP_HOST,
   SMTP_FROM: process.env.SMTP_FROM,
 }
+
+await registerAuth(app, { db, env })
 
 registerPodcastRoutes(app, { db })
 registerMemberRoutes(app, { db, env })
