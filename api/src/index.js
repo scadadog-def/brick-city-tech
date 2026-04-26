@@ -1,6 +1,7 @@
 import Fastify from 'fastify'
 import { ensureSchema, openDb } from './db.js'
 import { registerPodcastRoutes } from './podcast.js'
+import { registerMemberRoutes } from './members.js'
 
 const PORT = Number(process.env.PORT || 8787)
 const BASE_PATH = process.env.BASE_PATH || '/brick-city-tech'
@@ -31,6 +32,12 @@ app.get('/info', async () => {
   }
 })
 
+const env = {
+  SMTP_HOST: process.env.SMTP_HOST,
+  SMTP_FROM: process.env.SMTP_FROM,
+}
+
 registerPodcastRoutes(app, { db })
+registerMemberRoutes(app, { db, env })
 
 app.listen({ port: PORT, host: '0.0.0.0' })

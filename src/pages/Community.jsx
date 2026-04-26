@@ -1,9 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import SectionHeader from '../components/SectionHeader.jsx'
-import { exportMembersCSV, exportMembersJSON, loadMembers, saveMembers } from '../components/memberStore.js'
 
 export default function Community() {
-  const [members, setMembers] = useState([])
   const [form, setForm] = useState({
     name: '',
     email: '',
@@ -12,42 +10,48 @@ export default function Community() {
     notes: ''
   })
   const [msg, setMsg] = useState('')
+  const [busy, setBusy] = useState(false)
 
-  useEffect(() => {
-    setMembers(loadMembers())
-  }, [])
-
-  useEffect(() => {
-    saveMembers(members)
-  }, [members])
-
-  function addMember(e) {
+  async function addMember(e) {
     e.preventDefault()
     setMsg('')
+
     const email = (form.email || '').trim().toLowerCase()
     if (!email || !email.includes('@')) {
       setMsg('Please enter a valid email.')
       return
     }
-    const name = (form.name || '').trim()
-    const rec = {
-      id: crypto?.randomUUID ? crypto.randomUUID() : String(Date.now()),
-      createdAt: new Date().toISOString(),
-      name,
-      email,
-      role: form.role,
-      interest: form.interest,
-      notes: (form.notes || '').trim()
-    }
-    setMembers([rec, ...members])
-    setForm({ ...form, name: '', email: '', notes: '' })
-    setMsg('Saved. Thank you — we’ll follow up soon.')
-  }
 
-  function clearMembers() {
-    if (!confirm('Clear all saved member records from this browser?')) return
-    setMembers([])
-    setMsg('Cleared local records.')
+    setBusy(true)
+    try {
+      const res = await fetch('/brick-city-tech/api/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: form.name,
+          email: form.email,
+          role: form.role,
+          interest: form.interest,
+          notes: form.notes
+        })
+      })
+      const data = await res.json()
+      if (!res.ok || !data.ok) {
+        setMsg(`Signup failed: ${data.error || res.status}`)
+        return
+      }
+
+      setForm({ ...form, name: '', email: '', notes: '' })
+      if (data.verification?.configured) {
+        setMsg('Saved. Please check your email to verify your address (verification is enabled).')
+      } else {
+        setMsg('Saved. Email verification will be enabled soon.')
+      }
+    } catch (err) {
+      setMsg('Signup failed: network error')
+    } finally {
+      setBusy(false)
+    }
   }
 
   return (
@@ -70,31 +74,10 @@ export default function Community() {
           <div>
             <SectionHeader title="Sign up" code="SEC_01" right="INTAKE" />
             <p className="text-zinc-400">
-              This currently saves to a local members table in your browser. Next step is wiring to a shared backend list.
+              Signups are now stored in our backend membership table. Email verification will be enabled once SMTP is configured.
             </p>
           </div>
           <div className="mt-10">
-            <div className="font-mono text-cyan-400 text-[12px] uppercase">Exports</div>
-            <div className="flex flex-wrap gap-3 mt-3">
-              <button
-                onClick={() => exportMembersCSV(members)}
-                className="border border-zinc-700 py-3 px-4 font-['Space_Grotesk'] font-bold hover:bg-white hover:text-black transition-all"
-              >
-                EXPORT CSV
-              </button>
-              <button
-                onClick={() => exportMembersJSON(members)}
-                className="border border-zinc-700 py-3 px-4 font-['Space_Grotesk'] font-bold hover:bg-white hover:text-black transition-all"
-              >
-                EXPORT JSON
-              </button>
-              <button
-                onClick={clearMembers}
-                className="border border-red-700/60 text-red-300 py-3 px-4 font-['Space_Grotesk'] font-bold hover:bg-red-600 hover:text-black transition-all"
-              >
-                CLEAR
-              </button>
-            </div>
             {msg && <div className="text-zinc-400 mt-4">{msg}</div>}
           </div>
         </div>
@@ -136,42 +119,21 @@ export default function Community() {
             </div>
 
             <div className="md:col-span-2">
-              <button className="bg-cyan-400 text-black font-['Space_Grotesk'] font-bold uppercase px-8 py-4 active:translate-y-1 transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]" type="submit">
-                SAVE SIGNUP
+              <button
+                className="bg-cyan-400 text-black font-['Space_Grotesk'] font-bold uppercase px-8 py-4 active:translate-y-1 transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] disabled:opacity-50"
+                type="submit"
+                disabled={busy}
+              >
+                {busy ? 'SAVING…' : 'SAVE SIGNUP'}
               </button>
             </div>
           </form>
 
-          <div className="mt-10 overflow-auto border border-zinc-800">
-            <table className="w-full border-collapse">
-              <thead>
-                <tr className="bg-zinc-950">
-                  <th className="text-left p-3 font-mono text-[12px] text-cyan-400">Timestamp</th>
-                  <th className="text-left p-3 font-mono text-[12px] text-cyan-400">Name</th>
-                  <th className="text-left p-3 font-mono text-[12px] text-cyan-400">Email</th>
-                  <th className="text-left p-3 font-mono text-[12px] text-cyan-400">Role</th>
-                  <th className="text-left p-3 font-mono text-[12px] text-cyan-400">Interest</th>
-                  <th className="text-left p-3 font-mono text-[12px] text-cyan-400">Notes</th>
-                </tr>
-              </thead>
-              <tbody>
-                {members.length === 0 && (
-                  <tr className="border-t border-zinc-800">
-                    <td colSpan="6" className="p-3 text-zinc-400">No signups yet (in this browser).</td>
-                  </tr>
-                )}
-                {members.map((m) => (
-                  <tr key={m.id} className="border-t border-zinc-800">
-                    <td className="p-3 text-zinc-400">{m.createdAt}</td>
-                    <td className="p-3 text-zinc-400">{m.name || '—'}</td>
-                    <td className="p-3 text-zinc-400">{m.email}</td>
-                    <td className="p-3 text-zinc-400">{m.role}</td>
-                    <td className="p-3 text-zinc-400">{m.interest}</td>
-                    <td className="p-3 text-zinc-400">{m.notes || '—'}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          <div className="mt-10 bg-zinc-950 border border-zinc-800 p-6">
+            <div className="font-mono text-cyan-400 text-[12px] uppercase">Privacy</div>
+            <div className="text-zinc-400 mt-2">
+              We don’t display member emails publicly. Admin access and exports will live in the Admin panel once Google login is enabled.
+            </div>
           </div>
         </div>
       </section>
