@@ -53,12 +53,12 @@ export default function App() {
               <TopNavLink to="/podcast">PODCAST</TopNavLink>
             </nav>
 
-            <Link
+            <a
               className="font-['Space_Grotesk'] font-bold uppercase tracking-widest text-cyan-400 border-2 border-cyan-400 px-6 py-2 hover:bg-cyan-400 hover:text-black active:translate-y-0.5 active:shadow-none transition-all"
-              to="/community"
+              href="/brick-city-tech/api/auth/google/start"
             >
-              SIGN UP
-            </Link>
+              LOGIN
+            </a>
           </div>
         </header>
 
