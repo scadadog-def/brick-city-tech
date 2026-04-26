@@ -18,11 +18,11 @@ export default function Home() {
 
               <p className="max-w-xl text-zinc-400 mb-8">
                 AI is accelerating toward a world that can feel anti-human: less meaningful work, weaker community ties, more noise,
-                more manipulation. If we don’t build capability locally, we’ll inherit systems built elsewhere—with values we didn’t
+                more manipulation. If we don’t build capability locally, we will inherit systems built elsewhere with values we did not
                 choose.
                 <br />
                 <br />
-                Brick City Tech is Ocala’s build team for a human-first future—using AI, design, and micro-manufacturing to build a
+                Brick City Tech is Ocala’s build team for a human first future using AI, design, and micro manufacturing to build a
                 moat around what matters: families, farms, small businesses, and local dignity. Based at{' '}
                 <span className="text-cyan-400">The Powerplant Incubator</span>.
               </p>
@@ -52,7 +52,7 @@ export default function Home() {
                 <div className="font-mono text-cyan-400 text-[12px] uppercase">Founder note</div>
                 <p className="text-zinc-400 mt-3">
                   I moved to Ocala to start a family and get away from a technological landscape that was eroding family values in
-                  major cities. But you don’t preserve a way of life by hiding from change—you preserve it by learning the tools,
+                  major cities. But you don’t preserve a way of life by hiding from change. You preserve it by learning the tools,
                   setting the rules, and building local strength together.
                 </p>
               </div>

@@ -22,7 +22,7 @@ export default function Manifesto() {
             businesses compete, and how communities either grow or fall behind.
           </p>
           <p>
-            This shift is inevitable. The only question is whether Marion County participates in shaping it—or absorbs the
+            This shift is inevitable. The only question is whether Marion County participates in shaping it or absorbs the
             consequences of it. We choose to act. We start here, in Ocala.
           </p>
         </div>

@@ -31,7 +31,7 @@ Ocala’s Greatest Challenges
         <SectionHeader title="Ocala’s gap (local)" code="SEC_02" right="GAPS" />
         <div className="bg-zinc-950 border border-zinc-800 p-8">
           <ul className="list-disc pl-5 text-zinc-400 space-y-2">
-            <li><b className="text-zinc-100">Income pressure vs. cost of living.</b> Marion County median household income ≈ $58.5k (2019–2023, USAFacts). MIT Living Wage (single adult) ≈ $21.23/hr.</li>
+            <li><b className="text-zinc-100">Income pressure vs. cost of living.</b> Marion County median household income is about $58.5k (2019 to 2023, USAFacts). MIT Living Wage (single adult) is about $21.23 per hour.</li>
             <li><b className="text-zinc-100">Uneven access to modern tools.</b> Many workers and owners haven’t been shown safe, practical workflows.</li>
             <li><b className="text-zinc-100">Knowledge leakage.</b> Practical know-how isn’t captured; it leaves when people retire or move.</li>
             <li><b className="text-zinc-100">Coordination costs.</b> Organizations solve similar problems in isolation, repeatedly.</li>

@@ -14,7 +14,7 @@ export default function Labs() {
           vision.
         </p>
         <p className="max-w-2xl text-zinc-500 font-mono text-xs mt-3">
-          BASE: The Powerplant Incubator — 405 SE Osceola Ave, Ocala, FL 34471
+          BASE: The Powerplant Incubator at 405 SE Osceola Ave, Ocala, FL 34471
         </p>
       </section>
 

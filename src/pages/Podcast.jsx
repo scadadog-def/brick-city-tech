@@ -3,7 +3,7 @@ import SectionHeader from '../components/SectionHeader.jsx'
 const EPISODES = [
   {
     id: 'E001',
-    title: 'Brick City Tech — Why Ocala, Why Now',
+    title: 'Brick City Tech  Why Ocala  Why Now',
     date: 'TBD',
     guests: 'Hector Lopez',
     summary:

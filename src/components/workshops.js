@@ -43,7 +43,7 @@ export const WORKSHOPS_2026 = [
   },
   {
     month: 'Aug',
-    title: 'Generative Arts Lab (Music / Art / Film) — with Synologic Studios',
+    title: 'Generative Arts Lab (Music / Art / Film) with Synalgic Studios',
     price: '$25',
     audience: 'Artists, creators, students, and curious builders',
     img: 'https://picsum.photos/seed/bct-generative-arts/1200/800',
@@ -62,7 +62,7 @@ export const WORKSHOPS_2026 = [
     audience: 'Builders, students, civic partners',
     img: 'https://picsum.photos/seed/bct-hack/1200/800',
     agenda: [
-      'Pick 1–2 scoped problems (2-week build)',
+      'Pick 1 to 2 scoped problems (2 week build)',
       'Form teams + define success metrics',
       'Prototype and demo',
       'Document findings + next steps',
