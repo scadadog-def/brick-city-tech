@@ -1,0 +1,25 @@
+@import "tailwindcss";
+
+/* Stitch reference helpers */
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+.scanlines {
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%),
+    linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
+  background-size: 100% 4px, 3px 100%;
+  pointer-events: none;
+}
+
+.hazard-border {
+  background: repeating-linear-gradient(45deg, #feb700, #feb700 10px, #000 10px, #000 20px);
+}
+
+.inner-glow {
+  box-shadow: inset 0 0 10px 0 rgba(0, 240, 255, 0.15);
+}
+
+body {
+  min-height: max(884px, 100dvh);
+}
