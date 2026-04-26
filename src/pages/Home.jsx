@@ -17,8 +17,14 @@ export default function Home() {
               </h2>
 
               <p className="max-w-xl text-zinc-400 mb-8">
-                Community-driven workshops and build sessions for Ocala/Marion County. Practical AI, automation, hardware, and
-                stewardship — hosted from <span className="text-cyan-400">The Powerplant Incubator</span>.
+                AI is accelerating toward a world that can feel anti-human: less meaningful work, weaker community ties, more noise,
+                more manipulation. If we don’t build capability locally, we’ll inherit systems built elsewhere—with values we didn’t
+                choose.
+                <br />
+                <br />
+                Brick City Tech is Ocala’s build team for a human-first future—using AI, design, and micro-manufacturing to build a
+                moat around what matters: families, farms, small businesses, and local dignity. Based at{' '}
+                <span className="text-cyan-400">The Powerplant Incubator</span>.
               </p>
 
               <div className="flex flex-wrap gap-4">
@@ -29,11 +35,26 @@ export default function Home() {
                   JOIN THE COLLECTIVE
                 </Link>
                 <Link
-                  to="/events"
+                  to="/ocala"
                   className="border-2 border-cyan-400 text-cyan-400 font-['Space_Grotesk'] font-bold uppercase px-8 py-4 hover:bg-cyan-400 hover:text-black transition-all"
+                >
+                  SEE THE PLAN
+                </Link>
+                <Link
+                  to="/events"
+                  className="border-2 border-zinc-700 text-zinc-200 font-['Space_Grotesk'] font-bold uppercase px-8 py-4 hover:bg-white hover:text-black transition-all"
                 >
                   WORKSHOP CALENDAR
                 </Link>
+              </div>
+
+              <div className="mt-8 bg-zinc-950/70 border border-zinc-800 p-6 max-w-xl">
+                <div className="font-mono text-cyan-400 text-[12px] uppercase">Founder note</div>
+                <p className="text-zinc-400 mt-3">
+                  I moved to Ocala to start a family and get away from a technological landscape that was eroding family values in
+                  major cities. But you don’t preserve a way of life by hiding from change—you preserve it by learning the tools,
+                  setting the rules, and building local strength together.
+                </p>
               </div>
             </div>
           </div>
