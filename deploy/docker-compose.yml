@@ -1,7 +1,7 @@
 services:
   api:
     build:
-      context: ./api
+      context: ../api
     environment:
       # Change on other servers as needed
       BASE_PATH: /brick-city-tech
@@ -24,7 +24,7 @@ services:
 
   web:
     build:
-      context: .
+      context: ..
       dockerfile: deploy/Dockerfile.web
     depends_on:
       - api
