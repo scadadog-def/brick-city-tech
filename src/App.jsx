@@ -6,6 +6,7 @@ import Community from './pages/Community.jsx'
 import Manifesto from './pages/Manifesto.jsx'
 import Ocala from './pages/Ocala.jsx'
 import Sponsors from './pages/Sponsors.jsx'
+import Podcast from './pages/Podcast.jsx'
 
 function TopNavLink({ to, children }) {
   return (
@@ -49,6 +50,7 @@ export default function App() {
               <TopNavLink to="/ocala">OCALA</TopNavLink>
               <TopNavLink to="/manifesto">MANIFESTO</TopNavLink>
               <TopNavLink to="/sponsors">SPONSORS</TopNavLink>
+              <TopNavLink to="/podcast">PODCAST</TopNavLink>
             </nav>
 
             <Link
@@ -69,6 +71,7 @@ export default function App() {
             <Route path="/ocala" element={<Ocala />} />
             <Route path="/manifesto" element={<Manifesto />} />
             <Route path="/sponsors" element={<Sponsors />} />
+            <Route path="/podcast" element={<Podcast />} />
           </Routes>
         </main>
 
@@ -108,6 +111,10 @@ export default function App() {
           <a className="flex flex-col items-center justify-center text-zinc-500 p-2 hover:text-cyan-300 active:scale-95 transition-all duration-75" href="/brick-city-tech/labs">
             <span className="material-symbols-outlined">terminal</span>
             <span className="font-['Space_Grotesk'] font-medium text-[10px] uppercase tracking-tighter">LABS</span>
+          </a>
+          <a className="flex flex-col items-center justify-center text-zinc-500 p-2 hover:text-cyan-300 active:scale-95 transition-all duration-75" href="/brick-city-tech/podcast">
+            <span className="material-symbols-outlined">mic</span>
+            <span className="font-['Space_Grotesk'] font-medium text-[10px] uppercase tracking-tighter">PODCAST</span>
           </a>
         </nav>
       </div>
