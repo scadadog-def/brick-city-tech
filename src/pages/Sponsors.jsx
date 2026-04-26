@@ -15,17 +15,18 @@ const SPONSORS = [
     note: 'Supporting local capability-building and responsible AI adoption.'
   },
   {
-    name: 'Synologic Studios',
-    subtitle: 'Creative + technical studio',
-    href: '#',
+    name: 'Synalgic Studios',
+    subtitle: 'Design + web + 3D + motion',
+    href: 'https://synalgicstudios.com/',
     color: 'border-[#feb700]',
     logo: null,
     offers: [
-      'Brand + design support for community initiatives',
-      'Web/media production and creative systems',
-      'Prototype support for demos and events'
+      'Design team on demand (brand + web)',
+      'Advanced design services (3D, motion, web)',
+      'Cinematic, story-driven multi-page websites',
+      'Support for generative arts workflows (music, art, film)'
     ],
-    note: 'If you send me the official website + logo, I’ll wire it in.'
+    note: 'Logo pending (site is Cloudflare-protected; please send the official logo file and I’ll add it).'
   }
 ]
 
