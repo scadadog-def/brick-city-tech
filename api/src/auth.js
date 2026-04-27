@@ -21,7 +21,7 @@ export async function registerAuth(app, { db, env }) {
   await app.register(session, {
     secret: env.SESSION_SECRET,
     cookie: {
-      path: env.BASE_PATH || '/brick-city-tech',
+      path: env.BASE_PATH || '/',
       httpOnly: true,
       sameSite: 'lax',
       secure: env.PUBLIC_BASE_URL?.startsWith('https://') || false,
@@ -33,7 +33,8 @@ export async function registerAuth(app, { db, env }) {
     return
   }
 
-  const callbackUri = `${env.PUBLIC_BASE_URL}${env.BASE_PATH}/api/auth/google/callback`
+  const basePath = env.BASE_PATH === '/' ? '' : (env.BASE_PATH || '')
+  const callbackUri = `${env.PUBLIC_BASE_URL}${basePath}/api/auth/google/callback`
 
   await app.register(oauthPlugin, {
     name: 'googleOAuth2',
@@ -108,7 +109,7 @@ export async function registerAuth(app, { db, env }) {
       is_admin: Boolean(member.is_admin),
     }
 
-    return reply.redirect(env.BASE_PATH + '/')
+    return reply.redirect((env.BASE_PATH === '/' ? '' : (env.BASE_PATH || '')) + '/')
   })
 
   app.get('/me', async (req) => {

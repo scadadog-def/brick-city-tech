@@ -4,7 +4,7 @@ services:
       context: ../api
     environment:
       # Change on other servers as needed
-      BASE_PATH: /brick-city-tech
+      BASE_PATH: ${BASE_PATH:-/}
       PORT: 8787
       DATABASE_PATH: /data/bct.sqlite
       # Auth / email (fill in later)
