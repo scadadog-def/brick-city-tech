@@ -36,13 +36,16 @@ app.get('/info', async () => {
 
 const env = {
   BASE_PATH,
-  PUBLIC_BASE_URL: process.env.PUBLIC_BASE_URL,
   ADMIN_EMAIL_ALLOWLIST: process.env.ADMIN_EMAIL_ALLOWLIST,
   SESSION_SECRET: process.env.SESSION_SECRET,
   GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
   GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
   SMTP_HOST: process.env.SMTP_HOST,
+  SMTP_PORT: process.env.SMTP_PORT,
+  SMTP_USER: process.env.SMTP_USER,
+  SMTP_PASS: process.env.SMTP_PASS,
   SMTP_FROM: process.env.SMTP_FROM,
+  PUBLIC_BASE_URL: process.env.PUBLIC_BASE_URL,
 }
 
 await registerAuth(app, { db, env })

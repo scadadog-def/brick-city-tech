@@ -18,7 +18,8 @@ create table if not exists members (
   status text not null default 'active',
   google_sub text null unique,
   google_email text null,
-  last_login_at text null
+  last_login_at text null,
+  password_hash text null
 );
 
 create index if not exists idx_members_email on members(email);

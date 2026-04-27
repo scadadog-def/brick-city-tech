@@ -1,7 +1,9 @@
 import cookie from '@fastify/cookie'
 import session from '@fastify/session'
 import oauthPlugin from '@fastify/oauth2'
-import { randomId } from './crypto.js'
+import { randomId, sha256Hex } from './crypto.js'
+import { hashPassword, verifyPassword } from './passwords.js'
+import { makeToken, verificationLink, sendEmail } from './email.js'
 
 function normEmail(e) {
   return String(e || '').trim().toLowerCase()
@@ -15,7 +17,20 @@ function parseAllowlist(s) {
 }
 
 export async function registerAuth(app, { db, env }) {
+  const basePath = env.BASE_PATH === '/' ? '' : (env.BASE_PATH || '')
+  function requireAuthed(req, reply) {
+    if (!req.session.member) {
+      reply.code(401)
+      throw new Error('unauthorized')
+    }
+  }
+
   const allowlist = parseAllowlist(env.ADMIN_EMAIL_ALLOWLIST)
+
+  const baseUrl = String(env.PUBLIC_BASE_URL || '').replace(/\/$/, '')
+  if (!baseUrl) {
+    app.log.warn('PUBLIC_BASE_URL is not set; email verification links may be wrong')
+  }
 
   await app.register(cookie)
   await app.register(session, {
@@ -33,8 +48,7 @@ export async function registerAuth(app, { db, env }) {
     return
   }
 
-  const basePath = env.BASE_PATH === '/' ? '' : (env.BASE_PATH || '')
-  const callbackUri = `${env.PUBLIC_BASE_URL}${basePath}/auth/google/callback`
+  const callbackUri = `${baseUrl}${basePath}/auth/google/callback`
 
   await app.register(oauthPlugin, {
     name: 'googleOAuth2',
@@ -114,6 +128,128 @@ export async function registerAuth(app, { db, env }) {
 
   app.get('/me', async (req) => {
     return { ok: true, member: req.session.member || null }
+  })
+
+  // Email + password auth (pending until email verified)
+  app.post('/auth/register', async (req, reply) => {
+    const body = req.body || {}
+    const email = normEmail(body.email)
+    const name = body.name != null ? String(body.name).trim() : null
+    const password = body.password != null ? String(body.password) : ''
+
+    if (!email || !email.includes('@')) return reply.code(400).send({ ok: false, error: 'invalid_email' })
+    if (!password || password.length < 10) return reply.code(400).send({ ok: false, error: 'weak_password' })
+
+    const now = new Date().toISOString()
+
+    const existing = db.prepare('select * from members where email = ?').get(email)
+    if (existing) {
+      return reply.code(409).send({ ok: false, error: 'email_exists' })
+    }
+
+    const id = randomId('mem_')
+    const isAdmin = allowlist.includes(email) ? 1 : 0
+    const password_hash = await hashPassword(password)
+
+    db.prepare(
+      `insert into members (id, created_at, email, name, role, is_admin, status, password_hash)
+       values (?,?,?,?,?,?,'pending',?)`,
+    ).run(id, now, email, name, 'member', isAdmin, password_hash)
+
+    // create verification token
+    const token = makeToken()
+    const token_hash = sha256Hex(token)
+    const expires_at = new Date(Date.now() + 1000 * 60 * 60 * 24).toISOString() // 24h
+    db.prepare(
+      `insert into verification_tokens (token_hash, member_id, purpose, expires_at)
+       values (?,?, 'email_verify', ?)`,
+    ).run(token_hash, id, expires_at)
+
+    const link = verificationLink(env, token)
+    const emailRes = await sendEmail(env, {
+      to: email,
+      subject: 'Verify your Brick City Tech email',
+      text: `Verify your email to activate your account:\n\n${link}\n\nIf you didn’t request this, ignore this email.`,
+    })
+
+    if (!emailRes.ok) {
+      req.log.warn({ email, error: emailRes.error, link }, 'verification email not sent (smtp not configured)')
+    }
+
+    return {
+      ok: true,
+      member: { id, email },
+      status: 'pending',
+      verification: {
+        sent: emailRes.ok,
+        // exposed only in dev/no-smtp so we can test flow
+        link: emailRes.ok ? undefined : link,
+      },
+    }
+  })
+
+  app.get('/verify-email', async (req, reply) => {
+    const token = String((req.query || {}).token || '')
+    if (!token) return reply.code(400).send({ ok: false, error: 'missing_token' })
+
+    const token_hash = sha256Hex(token)
+    const row = db
+      .prepare(
+        `select * from verification_tokens
+         where token_hash = ? and purpose = 'email_verify' and used_at is null`,
+      )
+      .get(token_hash)
+
+    if (!row) return reply.code(400).send({ ok: false, error: 'invalid_token' })
+    if (new Date(row.expires_at).getTime() < Date.now()) return reply.code(400).send({ ok: false, error: 'expired_token' })
+
+    const now = new Date().toISOString()
+    db.prepare('update verification_tokens set used_at = ? where token_hash = ?').run(now, token_hash)
+    db.prepare(
+      `update members
+       set email_verified_at = coalesce(email_verified_at, ?),
+           status = 'active'
+       where id = ?`,
+    ).run(now, row.member_id)
+
+    // Optionally sign them in after verify
+    const member = db.prepare('select * from members where id = ?').get(row.member_id)
+    req.session.member = {
+      id: member.id,
+      email: member.email,
+      name: member.name,
+      is_admin: Boolean(member.is_admin),
+    }
+
+    return reply.redirect(basePath + '/')
+  })
+
+  app.post('/auth/login', async (req, reply) => {
+    const body = req.body || {}
+    const email = normEmail(body.email)
+    const password = body.password != null ? String(body.password) : ''
+
+    const member = db.prepare('select * from members where email = ?').get(email)
+    if (!member) return reply.code(401).send({ ok: false, error: 'invalid_credentials' })
+
+    const ok = await verifyPassword(member.password_hash, password)
+    if (!ok) return reply.code(401).send({ ok: false, error: 'invalid_credentials' })
+
+    if (member.status !== 'active') {
+      return reply.code(403).send({ ok: false, error: 'account_not_active', status: member.status })
+    }
+
+    const now = new Date().toISOString()
+    db.prepare('update members set last_login_at = ? where id = ?').run(now, member.id)
+
+    req.session.member = {
+      id: member.id,
+      email: member.email,
+      name: member.name,
+      is_admin: Boolean(member.is_admin),
+    }
+
+    return { ok: true, member: req.session.member }
   })
 
   app.post('/auth/logout', async (req) => {
