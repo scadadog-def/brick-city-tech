@@ -74,7 +74,7 @@ export default function Community() {
           <div>
             <SectionHeader title="Sign up" code="SEC_01" right="INTAKE" />
             <p className="text-zinc-400">
-              Signups are now stored in our backend membership table. Email verification will be enabled once SMTP is configured.
+              Join the list for workshop announcements, build nights, and local partner updates.
             </p>
           </div>
           <div className="mt-10">
