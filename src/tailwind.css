@@ -23,3 +23,26 @@
 body {
   min-height: max(884px, 100dvh);
 }
+
+/* Prose styling for blog markdown */
+.prose {
+  color: rgb(212 212 216);
+}
+.prose h1,.prose h2,.prose h3,.prose h4 {
+  color: rgb(244 244 245);
+  font-family: "Space Grotesk", ui-sans-serif, system-ui;
+}
+.prose a {
+  color: rgb(34 211 238);
+}
+.prose code {
+  background: rgba(0,0,0,0.35);
+  padding: 0.15rem 0.35rem;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.prose pre {
+  background: rgba(0,0,0,0.35);
+  padding: 1rem;
+  border: 1px solid rgba(255,255,255,0.08);
+  overflow: auto;
+}

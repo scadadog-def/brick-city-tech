@@ -7,6 +7,8 @@ import Manifesto from './pages/Manifesto.jsx'
 import Ocala from './pages/Ocala.jsx'
 import Sponsors from './pages/Sponsors.jsx'
 import Podcast from './pages/Podcast.jsx'
+import Blog from './pages/Blog.jsx'
+import BlogPost from './pages/BlogPost.jsx'
 
 function TopNavLink({ to, children }) {
   return (
@@ -51,6 +53,7 @@ export default function App() {
               <TopNavLink to="/manifesto">MANIFESTO</TopNavLink>
               <TopNavLink to="/sponsors">SPONSORS</TopNavLink>
               <TopNavLink to="/podcast">PODCAST</TopNavLink>
+              <TopNavLink to="/blog">BLOG</TopNavLink>
             </nav>
 
             <a
@@ -72,6 +75,8 @@ export default function App() {
             <Route path="/manifesto" element={<Manifesto />} />
             <Route path="/sponsors" element={<Sponsors />} />
             <Route path="/podcast" element={<Podcast />} />
+            <Route path="/blog" element={<Blog />} />
+            <Route path="/blog/:slug" element={<BlogPost />} />
           </Routes>
         </main>
 

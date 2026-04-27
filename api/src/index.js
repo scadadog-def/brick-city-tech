@@ -1,6 +1,7 @@
 import Fastify from 'fastify'
 import { ensureSchema, openDb } from './db.js'
 import { registerPodcastRoutes } from './podcast.js'
+import { registerBlogRoutes } from './blog.js'
 import { registerMemberRoutes } from './members.js'
 import { registerAuth } from './auth.js'
 
@@ -47,6 +48,7 @@ const env = {
 await registerAuth(app, { db, env })
 
 registerPodcastRoutes(app, { db })
+registerBlogRoutes(app, { db })
 registerMemberRoutes(app, { db, env })
 
 app.listen({ port: PORT, host: '0.0.0.0' })

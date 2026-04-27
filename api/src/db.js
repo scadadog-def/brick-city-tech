@@ -25,10 +25,14 @@ export function ensureSchema(db) {
     );
   `)
 
-  const has001 = db.prepare('select 1 from migrations where id = ?').get('001_init')
-  if (!has001) {
-    const sql = readSql('./migrations/001_init.sql')
+  function apply(id, rel) {
+    const has = db.prepare('select 1 from migrations where id = ?').get(id)
+    if (has) return
+    const sql = readSql(rel)
     db.exec(sql)
-    db.prepare('insert into migrations (id, created_at) values (?, ?)').run('001_init', new Date().toISOString())
+    db.prepare('insert into migrations (id, created_at) values (?, ?)').run(id, new Date().toISOString())
   }
+
+  apply('001_init', './migrations/001_init.sql')
+  apply('002_blog', './migrations/002_blog.sql')
 }
