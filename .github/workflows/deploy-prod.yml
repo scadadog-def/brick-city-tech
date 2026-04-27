@@ -31,18 +31,28 @@ jobs:
 
       - name: Setup SSH key
         run: |
+          set -euxo pipefail
           install -m 700 -d ~/.ssh
           echo "${{ secrets.BCT_VPS_SSH_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -p "${{ secrets.BCT_VPS_PORT }}" "${{ secrets.BCT_VPS_HOST }}" >> ~/.ssh/known_hosts
+          ssh-keygen -lf ~/.ssh/id_rsa
+
+      - name: SSH connectivity debug
+        run: |
+          set -euxo pipefail
+          ssh -vvv -o BatchMode=yes -o StrictHostKeyChecking=yes -p "${{ secrets.BCT_VPS_PORT }}" "${{ secrets.BCT_VPS_USER }}@${{ secrets.BCT_VPS_HOST }}" 'echo AUTH_OK && whoami && hostname'
 
       - name: Upload release bundle
         run: |
+          set -euxo pipefail
           tar --exclude='.git' --exclude='node_modules' --exclude='dist' -czf release.tgz .
-          scp -P "${{ secrets.BCT_VPS_PORT }}" release.tgz "${{ secrets.BCT_VPS_USER }}@${{ secrets.BCT_VPS_HOST }}:/tmp/brick-city-tech-release.tgz"
+          ls -lh release.tgz
+          scp -vvv -P "${{ secrets.BCT_VPS_PORT }}" release.tgz "${{ secrets.BCT_VPS_USER }}@${{ secrets.BCT_VPS_HOST }}:/tmp/brick-city-tech-release.tgz"
 
       - name: Deploy and restart stack
         run: |
+          set -euxo pipefail
           ssh -p "${{ secrets.BCT_VPS_PORT }}" "${{ secrets.BCT_VPS_USER }}@${{ secrets.BCT_VPS_HOST }}" '
             set -euo pipefail
             APP_DIR="${{ secrets.BCT_VPS_APP_DIR }}"
