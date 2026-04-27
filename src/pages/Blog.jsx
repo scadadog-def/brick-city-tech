@@ -10,7 +10,7 @@ export default function Blog() {
     let alive = true
     ;(async () => {
       try {
-        const r = await fetch('/brick-city-tech/api/blog/posts')
+        const r = await fetch('/api/blog/posts')
         const j = await r.json()
         if (!alive) return
         if (!r.ok || !j.ok) {

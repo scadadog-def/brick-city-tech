@@ -58,7 +58,7 @@ export default function App() {
 
             <a
               className="font-['Space_Grotesk'] font-bold uppercase tracking-wider text-[11px] text-cyan-400 border-2 border-cyan-400 px-4 py-2 hover:bg-cyan-400 hover:text-black active:translate-y-0.5 active:shadow-none transition-all shrink-0"
-              href="/brick-city-tech/api/auth/google/start"
+              href="/api/auth/google/start"
             >
               LOGIN
             </a>
@@ -101,23 +101,23 @@ export default function App() {
         </footer>
 
         <nav className="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center px-4 py-2 bg-zinc-950 border-t-2 border-zinc-800 z-50 backdrop-blur-md">
-          <a className="flex flex-col items-center justify-center bg-cyan-400 text-black p-2 scale-105 transition-transform" href="/brick-city-tech/">
+          <a className="flex flex-col items-center justify-center bg-cyan-400 text-black p-2 scale-105 transition-transform" href="/">
             <span className="material-symbols-outlined">home</span>
             <span className="font-['Space_Grotesk'] font-medium text-[10px] uppercase tracking-tighter">HOME</span>
           </a>
-          <a className="flex flex-col items-center justify-center text-zinc-500 p-2 hover:text-cyan-300 active:scale-95 transition-all duration-75" href="/brick-city-tech/events">
+          <a className="flex flex-col items-center justify-center text-zinc-500 p-2 hover:text-cyan-300 active:scale-95 transition-all duration-75" href="/events">
             <span className="material-symbols-outlined">calendar_today</span>
             <span className="font-['Space_Grotesk'] font-medium text-[10px] uppercase tracking-tighter">EVENTS</span>
           </a>
-          <a className="flex flex-col items-center justify-center text-zinc-500 p-2 hover:text-cyan-300 active:scale-95 transition-all duration-75" href="/brick-city-tech/community">
+          <a className="flex flex-col items-center justify-center text-zinc-500 p-2 hover:text-cyan-300 active:scale-95 transition-all duration-75" href="/community">
             <span className="material-symbols-outlined">hub</span>
             <span className="font-['Space_Grotesk'] font-medium text-[10px] uppercase tracking-tighter">COMMUNITY</span>
           </a>
-          <a className="flex flex-col items-center justify-center text-zinc-500 p-2 hover:text-cyan-300 active:scale-95 transition-all duration-75" href="/brick-city-tech/labs">
+          <a className="flex flex-col items-center justify-center text-zinc-500 p-2 hover:text-cyan-300 active:scale-95 transition-all duration-75" href="/labs">
             <span className="material-symbols-outlined">terminal</span>
             <span className="font-['Space_Grotesk'] font-medium text-[10px] uppercase tracking-tighter">LABS</span>
           </a>
-          <a className="flex flex-col items-center justify-center text-zinc-500 p-2 hover:text-cyan-300 active:scale-95 transition-all duration-75" href="/brick-city-tech/podcast">
+          <a className="flex flex-col items-center justify-center text-zinc-500 p-2 hover:text-cyan-300 active:scale-95 transition-all duration-75" href="/podcast">
             <span className="material-symbols-outlined">mic</span>
             <span className="font-['Space_Grotesk'] font-medium text-[10px] uppercase tracking-tighter">PODCAST</span>
           </a>

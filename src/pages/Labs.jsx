@@ -48,7 +48,7 @@ export default function Labs() {
                   <p className="text-sm text-zinc-400 mb-4">Apply to demo a project at a build night or volunteer as a mentor.</p>
                   <a
                     className="w-full inline-flex justify-center bg-cyan-400 text-black font-['Space_Grotesk'] font-bold uppercase py-3 hover:bg-white transition-all active:translate-y-1 shadow-[4px_4px_0_0_#000]"
-                    href="/brick-city-tech/#connect"
+                    href="/#connect"
                   >
                     REQUEST ACCESS
                   </a>
@@ -67,7 +67,7 @@ export default function Labs() {
                 <h3 className="font-['Space_Grotesk'] text-[24px] font-semibold text-white uppercase mb-4">Kinetic Studio</h3>
                 <p className="text-sm text-zinc-400 mb-6">Hands-on hardware hacking, sensors, and field-ready prototypes.</p>
               </div>
-              <a className="w-full border-2 border-[#ffdb9d] text-[#ffdb9d] font-mono py-2 text-center hover:bg-[#ffdb9d] hover:text-black transition-all" href="/brick-city-tech/#programs">
+              <a className="w-full border-2 border-[#ffdb9d] text-[#ffdb9d] font-mono py-2 text-center hover:bg-[#ffdb9d] hover:text-black transition-all" href="/#programs">
                 JOIN STUDIO
               </a>
             </div>
@@ -81,7 +81,7 @@ export default function Labs() {
                 <h3 className="font-['Space_Grotesk'] text-[24px] font-semibold text-white uppercase mb-4">Sensor Sandbox</h3>
                 <p className="text-sm text-zinc-400 mb-6">Simple sensor networks for local monitoring and stewardship.</p>
               </div>
-              <a className="w-full border-2 border-zinc-600 text-zinc-300 font-mono py-2 text-center hover:bg-zinc-300 hover:text-black transition-all" href="/brick-city-tech/#programs">
+              <a className="w-full border-2 border-zinc-600 text-zinc-300 font-mono py-2 text-center hover:bg-zinc-300 hover:text-black transition-all" href="/#programs">
                 VIEW PROJECTS
               </a>
             </div>
@@ -96,7 +96,7 @@ export default function Labs() {
             <p className="text-zinc-400 text-sm mb-6">Stay synchronized with labs, workshops, and build sessions.</p>
             <a
               className="w-full relative group overflow-hidden py-4 border-b-4 border-black inline-flex justify-center"
-              href="/brick-city-tech/#connect"
+              href="/#connect"
             >
               <div className="absolute inset-0 hazard-border opacity-20 group-hover:opacity-40 transition-opacity" />
               <div className="relative bg-cyan-400 text-black font-['Space_Grotesk'] text-center font-black py-2 px-6">
