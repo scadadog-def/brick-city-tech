@@ -34,7 +34,7 @@ export async function registerAuth(app, { db, env }) {
   }
 
   const basePath = env.BASE_PATH === '/' ? '' : (env.BASE_PATH || '')
-  const callbackUri = `${env.PUBLIC_BASE_URL}${basePath}/api/auth/google/callback`
+  const callbackUri = `${env.PUBLIC_BASE_URL}${basePath}/auth/google/callback`
 
   await app.register(oauthPlugin, {
     name: 'googleOAuth2',
