@@ -16,7 +16,7 @@ function TopNavLink({ to, children }) {
       to={to}
       className={({ isActive }) =>
         [
-          "font-['Space_Grotesk'] font-bold uppercase tracking-widest px-2 py-1 transition-colors duration-150",
+          "font-['Space_Grotesk'] font-bold uppercase tracking-wider text-[11px] px-1.5 py-1 transition-colors duration-150",
           isActive
             ? 'text-cyan-400 border-b-2 border-cyan-400'
             : 'text-zinc-500 hover:bg-cyan-400 hover:text-black'
@@ -35,16 +35,16 @@ export default function App() {
       <div className="bg-[#131313] text-zinc-100 font-['Inter'] min-h-screen pb-24 md:pb-0">
         <header className="bg-zinc-950 border-b-2 border-zinc-800 sticky top-0 z-50 shadow-[inset_0_-1px_0_0_#00F0FF22]">
           <div className="flex justify-between items-center w-full px-6 py-4 max-w-7xl mx-auto">
-            <Link to="/" className="flex items-center gap-3">
+            <Link to="/" className="flex items-center gap-3 shrink-0">
               <img
                 alt="Brick City Tech Logo"
                 className="h-10 w-10 object-contain brightness-110 shadow-[0_0_10px_rgba(0,240,255,0.3)]"
                 src={`${import.meta.env.BASE_URL}brand/bct-stitch-logo.png`}
               />
-              <h1 className="text-xl font-black italic tracking-tighter text-cyan-400 font-['Space_Grotesk']">BRICK CITY TECH</h1>
+              <h1 className="text-lg lg:text-xl font-black italic tracking-tighter text-cyan-400 font-['Space_Grotesk']">BRICK CITY TECH</h1>
             </Link>
 
-            <nav className="hidden md:flex gap-8 items-center">
+            <nav className="hidden md:flex gap-3 lg:gap-5 items-center">
               <TopNavLink to="/">HOME</TopNavLink>
               <TopNavLink to="/events">EVENTS</TopNavLink>
               <TopNavLink to="/community">COMMUNITY</TopNavLink>
@@ -57,7 +57,7 @@ export default function App() {
             </nav>
 
             <a
-              className="font-['Space_Grotesk'] font-bold uppercase tracking-widest text-cyan-400 border-2 border-cyan-400 px-6 py-2 hover:bg-cyan-400 hover:text-black active:translate-y-0.5 active:shadow-none transition-all"
+              className="font-['Space_Grotesk'] font-bold uppercase tracking-wider text-[11px] text-cyan-400 border-2 border-cyan-400 px-4 py-2 hover:bg-cyan-400 hover:text-black active:translate-y-0.5 active:shadow-none transition-all shrink-0"
               href="/brick-city-tech/api/auth/google/start"
             >
               LOGIN
