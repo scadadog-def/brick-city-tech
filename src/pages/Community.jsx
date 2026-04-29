@@ -47,7 +47,7 @@ export default function Community() {
       } else {
         setMsg('Saved. Email verification will be enabled soon.')
       }
-    } catch (err) {
+    } catch {
       setMsg('Signup failed: network error')
     } finally {
       setBusy(false)

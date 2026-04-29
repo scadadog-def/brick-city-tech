@@ -11,7 +11,9 @@ export function loadMembers() {
 export function saveMembers(members) {
   try {
     localStorage.setItem('bct_members_v1', JSON.stringify(members))
-  } catch {}
+  } catch {
+    // ignore quota / privacy mode failures
+  }
 }
 
 export function downloadText(filename, text, mime = 'text/plain') {

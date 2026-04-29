@@ -1,4 +1,4 @@
-import { randomId, sha256Hex } from './crypto.js'
+import { randomId } from './crypto.js'
 
 function normEmail(e) {
   return String(e || '').trim().toLowerCase()
