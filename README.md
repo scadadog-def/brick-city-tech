@@ -1,21 +1,6 @@
 # Brick City Tech
 
-Brick City Tech is a community-facing site plus lightweight backend services that support memberships, content, and admin workflows.
-
-- Frontend: React + Vite
-- Backend: Fastify (Node) + SQLite
-- Deployment: Docker Compose on a VPS, gated by GitHub Actions
-
-## Why this exists (motivation)
-
-Brick City Tech is meant to be a practical local “maker/build” hub:
-- workshop announcements & updates
-- publishing community content (blog + podcast)
-- a foundation for future admin tooling (members, sponsors, events)
-
-## Architecture
-
-See: `docs/ARCHITECTURE.md`
+This repo contains the Brick City Tech website (React/Vite) and the backend API (Fastify + SQLite) used for memberships, blog/podcast content, and admin workflows.
 
 ## Quickstart (local dev)
 
@@ -35,56 +20,65 @@ npm ci
 node src/index.js
 ```
 
-## Contribution workflow
+## Branching + contribution workflow
 
-We use a 2-branch promotion model:
+We use a simple 2-branch promotion model:
 
-- feature branches → PR into **develop**
+- **feature/** branches → PR into **develop**
 - **develop** → PR into **main** when ready to ship
 - **main** is the only branch that deploys **production**
 
-Detailed guidelines:
-- `CONTRIBUTING.md`
+### Branch naming
+
+Use one of:
+- `feat/<short-name>`
+- `fix/<short-name>`
+- `chore/<short-name>`
+- `copy/<short-name>`
+- `ci/<short-name>`
+
+### Commit message convention
+
+Use conventional/semantic prefixes:
+- `feat:` new capability
+- `fix:` bug fix
+- `chore:` maintenance
+- `ci:` pipeline changes
+- `copy:` text/copy edits
+- `ui:` UI-only tweaks
+
+Example:
+
+```bash
+git checkout -b feat/password-auth
+# ...make changes...
+git commit -m "feat(auth): add pending registration"
+```
 
 ## CI (GitHub Actions)
 
-CI runs automatically:
-- on PRs targeting `develop`
-- on pushes to `develop`
+A CI workflow runs automatically to prevent broken code from merging.
 
-Current checks:
-- Web: lint + build
-- API: basic check script
+### When CI runs
+- On **pull requests targeting `develop`**
+- On **pushes to `develop`**
 
-## Security / dependency checks
+### What CI checks
+- **Web:** `npm ci`, `npm run lint`, `npm run build`
+- **API:** `npm ci` (in `api/`) then `npm run check`
 
-At minimum, run locally:
-
-```bash
-npm audit
-```
-
-We can also enable GitHub-native scanning:
-- Dependabot alerts
-- CodeQL
+If CI fails, fix the errors in your branch and push again; the PR will update.
 
 ## Deployments
 
 ### Production
-Production deploy is triggered by GitHub Actions on:
-- push to `main`
+Production deployments are triggered by GitHub Actions on:
+- `push` to `main`
 
-### Development
-Development deploys should run from `develop`/feature branches on a separate host/stack so production is never impacted.
+The deploy workflow packages the repo and deploys it to the production VPS, then rebuilds/restarts the Docker Compose stack.
 
-## Open issues / TODOs
-
-See GitHub Issues.
-
-Near-term items we’re actively building:
-- Turnstile captcha for registration
-- pending email verification (SMTP wiring)
-- admin panel for members/sponsors
+### Development (recommended)
+Development deployments should run from `develop` or feature branches (separate host/stack), and should not affect production.
 
 ## Environment variables
 
