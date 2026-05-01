@@ -54,8 +54,5 @@ export function registerMemberRoutes(app, { db, env }) {
     }
   })
 
-  // Placeholder: later this will verify email tokens
-  app.get('/verify-email', async () => {
-    return { ok: false, error: 'not_implemented' }
-  })
+  // NOTE: email verification is implemented in auth routes (/verify-email)
 }
