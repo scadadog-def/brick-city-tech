@@ -1,8 +1,7 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 export default function Login() {
-  const nav = useNavigate()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [msg, setMsg] = useState('')
@@ -28,7 +27,8 @@ export default function Login() {
         return
       }
 
-      nav('/')
+      // Force reload so header session state updates immediately
+      window.location.href = '/'
     } catch {
       setMsg('Login failed: network error')
     } finally {

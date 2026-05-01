@@ -1,9 +1,8 @@
 import { useMemo, useState } from 'react'
-import { Link, useSearchParams, useNavigate } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 
 export default function ResetPassword() {
   const [params] = useSearchParams()
-  const nav = useNavigate()
   const token = useMemo(() => params.get('token') || '', [params])
 
   const [password, setPassword] = useState('')
@@ -38,7 +37,9 @@ export default function ResetPassword() {
       }
 
       setMsg('Password reset. You are now logged in.')
-      setTimeout(() => nav('/'), 600)
+      setTimeout(() => {
+        window.location.href = '/'
+      }, 400)
     } catch {
       setMsg('Reset failed: network error')
     } finally {
