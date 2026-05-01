@@ -9,6 +9,8 @@ import Sponsors from './pages/Sponsors.jsx'
 import Podcast from './pages/Podcast.jsx'
 import Blog from './pages/Blog.jsx'
 import BlogPost from './pages/BlogPost.jsx'
+import Login from './pages/Login.jsx'
+import Register from './pages/Register.jsx'
 
 function TopNavLink({ to, children }) {
   return (
@@ -56,12 +58,12 @@ export default function App() {
               <TopNavLink to="/blog">BLOG</TopNavLink>
             </nav>
 
-            <a
+            <Link
               className="font-['Space_Grotesk'] font-bold uppercase tracking-wider text-[11px] text-cyan-400 border-2 border-cyan-400 px-4 py-2 hover:bg-cyan-400 hover:text-black active:translate-y-0.5 active:shadow-none transition-all shrink-0"
-              href="/api/auth/google/start"
+              to="/login"
             >
               LOGIN
-            </a>
+            </Link>
           </div>
         </header>
 
@@ -77,6 +79,8 @@ export default function App() {
             <Route path="/podcast" element={<Podcast />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/blog/:slug" element={<BlogPost />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
           </Routes>
         </main>
 

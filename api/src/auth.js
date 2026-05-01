@@ -18,13 +18,6 @@ function parseAllowlist(s) {
 
 export async function registerAuth(app, { db, env }) {
   const basePath = env.BASE_PATH === '/' ? '' : (env.BASE_PATH || '')
-  function requireAuthed(req, reply) {
-    if (!req.session.member) {
-      reply.code(401)
-      throw new Error('unauthorized')
-    }
-  }
-
   const allowlist = parseAllowlist(env.ADMIN_EMAIL_ALLOWLIST)
 
   const baseUrl = String(env.PUBLIC_BASE_URL || '').replace(/\/$/, '')
