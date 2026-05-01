@@ -1,4 +1,5 @@
 import crypto from 'node:crypto'
+import nodemailer from 'nodemailer'
 
 function b64url(buf) {
   return buf.toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/g, '')
@@ -27,12 +28,29 @@ export function verificationLink(env, token) {
 }
 
 export async function sendEmail(env, { to, subject, text }) {
-  // We purposely keep this as a stub until SMTP is configured.
-  // For pending-account flow in dev, we can log the link instead.
-  if (!env.SMTP_HOST || !env.SMTP_FROM) {
+  if (!env.SMTP_HOST || !env.SMTP_FROM || !env.SMTP_USER || !env.SMTP_PASS) {
     return { ok: false, error: 'smtp_not_configured' }
   }
 
-  // Minimal SMTP implementation can be added later (nodemailer).
-  return { ok: false, error: 'smtp_not_implemented' }
+  const port = Number(env.SMTP_PORT || 587)
+  const secure = port === 465
+
+  const transporter = nodemailer.createTransport({
+    host: env.SMTP_HOST,
+    port,
+    secure,
+    auth: {
+      user: env.SMTP_USER,
+      pass: env.SMTP_PASS,
+    },
+  })
+
+  const info = await transporter.sendMail({
+    from: env.SMTP_FROM,
+    to,
+    subject,
+    text,
+  })
+
+  return { ok: true, messageId: info.messageId }
 }
