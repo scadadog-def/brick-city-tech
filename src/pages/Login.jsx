@@ -83,8 +83,13 @@ export default function Login() {
 
           {msg && <div className="text-zinc-300">{msg}</div>}
 
-          <div className="text-zinc-400 text-sm">
-            Don’t have an account? <Link className="text-cyan-400 hover:underline" to="/register">Register</Link>
+          <div className="text-zinc-400 text-sm flex flex-col gap-2">
+            <div>
+              Don’t have an account? <Link className="text-cyan-400 hover:underline" to="/register">Register</Link>
+            </div>
+            <div>
+              Forgot password? <Link className="text-cyan-400 hover:underline" to="/forgot-password">Reset it</Link>
+            </div>
           </div>
         </form>
       </div>

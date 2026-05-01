@@ -3,7 +3,7 @@ import session from '@fastify/session'
 import oauthPlugin from '@fastify/oauth2'
 import { randomId, sha256Hex } from './crypto.js'
 import { hashPassword, verifyPassword } from './passwords.js'
-import { makeToken, verificationLink, sendEmail } from './email.js'
+import { makeToken, verificationLink, passwordResetLink, sendEmail } from './email.js'
 
 function normEmail(e) {
   return String(e || '').trim().toLowerCase()
@@ -215,6 +215,73 @@ export async function registerAuth(app, { db, env }) {
     }
 
     return reply.redirect(basePath + '/')
+  })
+
+  app.post('/auth/forgot-password', async (req) => {
+    const body = req.body || {}
+    const email = normEmail(body.email)
+
+    // Always return ok to avoid account enumeration
+    const member = db.prepare('select * from members where email = ?').get(email)
+    if (!member) return { ok: true }
+
+    const token = makeToken()
+    const token_hash = sha256Hex(token)
+    const expires_at = new Date(Date.now() + 1000 * 60 * 30).toISOString() // 30 min
+    db.prepare(
+      `insert into verification_tokens (token_hash, member_id, purpose, expires_at)
+       values (?,?, 'password_reset', ?)`,
+    ).run(token_hash, member.id, expires_at)
+
+    const link = passwordResetLink(env, token)
+    const emailRes = await sendEmail(env, {
+      to: member.email,
+      subject: 'Reset your Brick City Tech password',
+      text: `Reset your password using this link (expires in 30 minutes):\n\n${link}\n\nIf you didn’t request this, you can ignore this email.`,
+    })
+
+    if (!emailRes.ok) {
+      req.log.warn({ email, error: emailRes.error, link }, 'password reset email not sent')
+    }
+
+    return { ok: true, sent: emailRes.ok }
+  })
+
+  app.post('/auth/reset-password', async (req, reply) => {
+    const body = req.body || {}
+    const token = String(body.token || '')
+    const newPassword = body.password != null ? String(body.password) : ''
+
+    if (!token) return reply.code(400).send({ ok: false, error: 'missing_token' })
+    if (!newPassword || newPassword.length < 10) return reply.code(400).send({ ok: false, error: 'weak_password' })
+
+    const token_hash = sha256Hex(token)
+    const row = db
+      .prepare(
+        `select * from verification_tokens
+         where token_hash = ? and purpose = 'password_reset' and used_at is null`,
+      )
+      .get(token_hash)
+
+    if (!row) return reply.code(400).send({ ok: false, error: 'invalid_token' })
+    if (new Date(row.expires_at).getTime() < Date.now()) return reply.code(400).send({ ok: false, error: 'expired_token' })
+
+    const now = new Date().toISOString()
+    const password_hash = await hashPassword(newPassword)
+
+    db.prepare('update verification_tokens set used_at = ? where token_hash = ?').run(now, token_hash)
+    db.prepare('update members set password_hash = ?, last_login_at = ? where id = ?').run(password_hash, now, row.member_id)
+
+    // Sign in after reset
+    const member = db.prepare('select * from members where id = ?').get(row.member_id)
+    req.session.member = {
+      id: member.id,
+      email: member.email,
+      name: member.name,
+      is_admin: Boolean(member.is_admin),
+    }
+
+    return { ok: true }
   })
 
   app.post('/auth/login', async (req, reply) => {

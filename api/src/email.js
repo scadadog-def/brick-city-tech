@@ -24,7 +24,11 @@ export function basePathPrefix(env) {
 }
 
 export function verificationLink(env, token) {
-  return `${publicBaseUrl(env)}${basePathPrefix(env)}/api/verify-email?token=${encodeURIComponent(token)}`
+  return `${publicBaseUrl(env)}${basePathPrefix(env)}/verify-email?token=${encodeURIComponent(token)}`
+}
+
+export function passwordResetLink(env, token) {
+  return `${publicBaseUrl(env)}${basePathPrefix(env)}/reset-password?token=${encodeURIComponent(token)}`
 }
 
 export async function sendEmail(env, { to, subject, text }) {
