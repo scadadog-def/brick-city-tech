@@ -1,6 +1,12 @@
-import { Link } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
+import { useMe } from '../components/useMe.js'
 
 export default function Home() {
+  const { member } = useMe()
+
+  // Logged-in users should land in the members area, not the public CTA.
+  if (member?.status === 'pending') return <Navigate to="/verify-email-needed" replace />
+  if (member) return <Navigate to="/community" replace />
   return (
     <>
       <section className="relative mb-20">
