@@ -1,3 +1,4 @@
+import { useEffect, useMemo, useState } from 'react'
 import { Link, NavLink, Route, Routes } from 'react-router-dom'
 import Home from './pages/Home.jsx'
 import Labs from './pages/Labs.jsx'
@@ -9,6 +10,9 @@ import Sponsors from './pages/Sponsors.jsx'
 import Podcast from './pages/Podcast.jsx'
 import Blog from './pages/Blog.jsx'
 import BlogPost from './pages/BlogPost.jsx'
+import Account from './pages/Account.jsx'
+import Admin from './pages/Admin.jsx'
+import Login from './pages/Login.jsx'
 
 function TopNavLink({ to, children }) {
   return (
@@ -30,6 +34,49 @@ function TopNavLink({ to, children }) {
 }
 
 export default function App() {
+  const [member, setMember] = useState(null)
+  const [loadingMember, setLoadingMember] = useState(true)
+  const [menuOpen, setMenuOpen] = useState(false)
+
+  async function loadMember() {
+    setLoadingMember(true)
+    try {
+      const res = await fetch('/api/me', { credentials: 'include' })
+      const data = await res.json()
+      if (res.ok && data?.ok) {
+        setMember(data.member || null)
+      } else {
+        setMember(null)
+      }
+    } catch {
+      setMember(null)
+    } finally {
+      setLoadingMember(false)
+    }
+  }
+
+  useEffect(() => {
+    loadMember()
+  }, [])
+
+  const initials = useMemo(() => {
+    if (!member?.name && !member?.email) return 'U'
+    const source = String(member.name || member.email).trim()
+    const parts = source.split(/\s+/).filter(Boolean)
+    if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase()
+    return (parts[0][0] + parts[1][0]).toUpperCase()
+  }, [member])
+
+  async function logout() {
+    try {
+      await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' })
+    } finally {
+      setMenuOpen(false)
+      setMember(null)
+      loadMember()
+    }
+  }
+
   return (
     <div className="dark">
       <div className="bg-[#131313] text-zinc-100 font-['Inter'] min-h-screen pb-24 md:pb-0">
@@ -56,12 +103,48 @@ export default function App() {
               <TopNavLink to="/blog">BLOG</TopNavLink>
             </nav>
 
-            <a
-              className="font-['Space_Grotesk'] font-bold uppercase tracking-wider text-[11px] text-cyan-400 border-2 border-cyan-400 px-4 py-2 hover:bg-cyan-400 hover:text-black active:translate-y-0.5 active:shadow-none transition-all shrink-0"
-              href="/api/auth/google/start"
-            >
-              LOGIN
-            </a>
+            {loadingMember ? (
+              <div className="text-zinc-500 font-mono text-xs uppercase">...</div>
+            ) : member ? (
+              <div className="relative shrink-0">
+                <button
+                  className="h-10 w-10 rounded-full border-2 border-cyan-400 text-cyan-400 font-['Space_Grotesk'] font-bold"
+                  onClick={() => setMenuOpen((v) => !v)}
+                  type="button"
+                >
+                  {initials}
+                </button>
+                {menuOpen && (
+                  <div className="absolute right-0 mt-2 w-64 bg-zinc-950 border border-zinc-800 p-3 shadow-xl">
+                    <div className="text-zinc-200 text-sm font-semibold truncate">{member.name || 'Member'}</div>
+                    <div className="text-zinc-400 text-xs font-mono truncate">{member.email}</div>
+                    <div className="mt-1 text-[10px] uppercase font-mono text-cyan-400">
+                      {member.is_admin ? 'Admin' : 'Member'}
+                    </div>
+                    <div className="mt-3 border-t border-zinc-800 pt-3 flex flex-col gap-2">
+                      <Link className="text-sm text-zinc-300 hover:text-cyan-400" onClick={() => setMenuOpen(false)} to="/account">
+                        Account
+                      </Link>
+                      {member.is_admin && (
+                        <Link className="text-sm text-zinc-300 hover:text-cyan-400" onClick={() => setMenuOpen(false)} to="/admin">
+                          Admin Settings
+                        </Link>
+                      )}
+                      <button className="text-left text-sm text-zinc-300 hover:text-cyan-400" onClick={logout} type="button">
+                        Logout
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <a
+                className="font-['Space_Grotesk'] font-bold uppercase tracking-wider text-[11px] text-cyan-400 border-2 border-cyan-400 px-4 py-2 hover:bg-cyan-400 hover:text-black active:translate-y-0.5 active:shadow-none transition-all shrink-0"
+                href="/login"
+              >
+                LOGIN
+              </a>
+            )}
           </div>
         </header>
 
@@ -77,6 +160,9 @@ export default function App() {
             <Route path="/podcast" element={<Podcast />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/blog/:slug" element={<BlogPost />} />
+            <Route path="/login" element={<Login onAuthSuccess={loadMember} />} />
+            <Route path="/account" element={<Account member={member} />} />
+            <Route path="/admin" element={<Admin member={member} />} />
           </Routes>
         </main>
 
