@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "node src/index.js",
     "start": "node src/index.js",
-    "check": "node -c src/index.js && node -c src/auth.js && node -c src/members.js && node -c src/blog.js && node -c src/podcast.js && node -c src/db.js && node -c src/crypto.js"
+    "check": "node -c src/index.js && node -c src/auth.js && node -c src/members.js && node -c src/blog.js && node -c src/podcast.js && node -c src/db.js && node -c src/crypto.js",
+    "test": "node --test"
   },
   "dependencies": {
     "@fastify/cookie": "^11.0.2",
