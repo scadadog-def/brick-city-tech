@@ -6,7 +6,7 @@ const SPONSORS = [
     subtitle: 'Where IT Meets OT',
     href: 'https://www.scadadog.com/',
     color: 'border-cyan-400',
-    logo: '/brick-city-tech/sponsors/scadadog-logo-dark.png',
+    logo: '/sponsors/scadadog-logo-dark.png',
     offers: [
       'SCADA integration + industrial automation support',
       'IIoT data collection and operations analytics',

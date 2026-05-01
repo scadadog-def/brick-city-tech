@@ -13,7 +13,7 @@ export default function BlogPost() {
     let alive = true
     ;(async () => {
       try {
-        const r = await fetch(`/brick-city-tech/api/blog/posts/${encodeURIComponent(slug)}`)
+        const r = await fetch(`/api/blog/posts/${encodeURIComponent(slug)}`)
         const j = await r.json()
         if (!alive) return
         if (!r.ok || !j.ok) {

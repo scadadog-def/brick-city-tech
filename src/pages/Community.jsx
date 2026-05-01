@@ -24,7 +24,7 @@ export default function Community() {
 
     setBusy(true)
     try {
-      const res = await fetch('/brick-city-tech/api/signup', {
+      const res = await fetch('/api/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -47,7 +47,7 @@ export default function Community() {
       } else {
         setMsg('Saved. Email verification will be enabled soon.')
       }
-    } catch (err) {
+    } catch {
       setMsg('Signup failed: network error')
     } finally {
       setBusy(false)

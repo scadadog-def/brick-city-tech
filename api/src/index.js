@@ -6,7 +6,7 @@ import { registerMemberRoutes } from './members.js'
 import { registerAuth } from './auth.js'
 
 const PORT = Number(process.env.PORT || 8787)
-const BASE_PATH = process.env.BASE_PATH || '/brick-city-tech'
+const BASE_PATH = process.env.BASE_PATH || '/'
 const DATABASE_PATH = process.env.DATABASE_PATH || '/data/bct.sqlite'
 
 const app = Fastify({ logger: true })
