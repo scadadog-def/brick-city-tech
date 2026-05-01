@@ -1,4 +1,6 @@
-import { Link, NavLink, Route, Routes } from 'react-router-dom'
+import { Link, NavLink, Route, Routes, useNavigate } from 'react-router-dom'
+import { useEffect, useRef, useState } from 'react'
+import { useMe } from './components/useMe.js'
 import Home from './pages/Home.jsx'
 import Labs from './pages/Labs.jsx'
 import Events from './pages/Events.jsx'
@@ -33,7 +35,45 @@ function TopNavLink({ to, children }) {
   )
 }
 
+function initials(member) {
+  const name = (member?.name || '').trim()
+  if (name) {
+    const parts = name.split(/\s+/).filter(Boolean)
+    const a = parts[0]?.[0] || 'U'
+    const b = parts.length > 1 ? parts[parts.length - 1][0] : ''
+    return (a + b).toUpperCase()
+  }
+  const email = String(member?.email || '')
+  return (email[0] || 'U').toUpperCase()
+}
+
 export default function App() {
+  const nav = useNavigate()
+  const { member, refresh, setMember } = useMe()
+  const [menuOpen, setMenuOpen] = useState(false)
+  const menuRef = useRef(null)
+
+  useEffect(() => {
+    function onDocClick(e) {
+      if (!menuRef.current) return
+      if (!menuRef.current.contains(e.target)) setMenuOpen(false)
+    }
+    document.addEventListener('mousedown', onDocClick)
+    return () => document.removeEventListener('mousedown', onDocClick)
+  }, [])
+
+  async function logout() {
+    try {
+      await fetch('/auth/logout', { method: 'POST', credentials: 'include' })
+    } finally {
+      setMenuOpen(false)
+      setMember(null)
+      // ensure session cleared
+      refresh()
+      nav('/')
+    }
+  }
+
   return (
     <div className="dark">
       <div className="bg-[#131313] text-zinc-100 font-['Inter'] min-h-screen pb-24 md:pb-0">
@@ -60,12 +100,42 @@ export default function App() {
               <TopNavLink to="/blog">BLOG</TopNavLink>
             </nav>
 
-            <Link
-              className="font-['Space_Grotesk'] font-bold uppercase tracking-wider text-[11px] text-cyan-400 border-2 border-cyan-400 px-4 py-2 hover:bg-cyan-400 hover:text-black active:translate-y-0.5 active:shadow-none transition-all shrink-0"
-              to="/login"
-            >
-              LOGIN
-            </Link>
+            {!member ? (
+              <Link
+                className="font-['Space_Grotesk'] font-bold uppercase tracking-wider text-[11px] text-cyan-400 border-2 border-cyan-400 px-4 py-2 hover:bg-cyan-400 hover:text-black active:translate-y-0.5 active:shadow-none transition-all shrink-0"
+                to="/login"
+              >
+                LOGIN
+              </Link>
+            ) : (
+              <div className="relative" ref={menuRef}>
+                <button
+                  type="button"
+                  onClick={() => setMenuOpen((v) => !v)}
+                  className="h-9 w-9 rounded-full border-2 border-cyan-400 text-cyan-300 font-mono text-xs grid place-items-center hover:bg-cyan-400 hover:text-black transition-colors"
+                  aria-label="User menu"
+                >
+                  {initials(member)}
+                </button>
+
+                {menuOpen && (
+                  <div className="absolute right-0 mt-2 w-64 bg-zinc-950 border border-zinc-800 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] p-3">
+                    <div className="text-zinc-200 font-['Space_Grotesk'] font-bold uppercase text-xs tracking-wider">
+                      {member.name || 'Member'}
+                    </div>
+                    <div className="text-zinc-500 text-xs mt-1 break-all">{member.email}</div>
+                    <div className="h-px bg-zinc-800 my-3" />
+                    <button
+                      type="button"
+                      onClick={logout}
+                      className="w-full text-left font-mono text-sm text-zinc-300 hover:text-cyan-400"
+                    >
+                      / LOG OUT
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </header>
 
