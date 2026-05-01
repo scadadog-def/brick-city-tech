@@ -36,28 +36,27 @@ export async function registerAuth(app, { db, env }) {
     },
   })
 
-  if (!env.GOOGLE_CLIENT_ID || !env.GOOGLE_CLIENT_SECRET) {
+  const googleEnabled = Boolean(env.GOOGLE_CLIENT_ID && env.GOOGLE_CLIENT_SECRET)
+  if (!googleEnabled) {
     app.log.warn('Google OAuth not configured (missing GOOGLE_CLIENT_ID/SECRET)')
-    return
-  }
+  } else {
+    const callbackUri = `${baseUrl}${basePath}/auth/google/callback`
 
-  const callbackUri = `${baseUrl}${basePath}/auth/google/callback`
-
-  await app.register(oauthPlugin, {
-    name: 'googleOAuth2',
-    scope: ['openid', 'email', 'profile'],
-    credentials: {
-      client: {
-        id: env.GOOGLE_CLIENT_ID,
-        secret: env.GOOGLE_CLIENT_SECRET,
+    await app.register(oauthPlugin, {
+      name: 'googleOAuth2',
+      scope: ['openid', 'email', 'profile'],
+      credentials: {
+        client: {
+          id: env.GOOGLE_CLIENT_ID,
+          secret: env.GOOGLE_CLIENT_SECRET,
+        },
+        auth: oauthPlugin.GOOGLE_CONFIGURATION,
       },
-      auth: oauthPlugin.GOOGLE_CONFIGURATION,
-    },
-    startRedirectPath: '/auth/google/start',
-    callbackUri,
-  })
+      startRedirectPath: '/auth/google/start',
+      callbackUri,
+    })
 
-  app.get('/auth/google/callback', async function (req, reply) {
+    app.get('/auth/google/callback', async function (req, reply) {
     const token = await this.googleOAuth2.getAccessTokenFromAuthorizationCodeFlow(req)
 
     const userinfoRes = await fetch('https://openidconnect.googleapis.com/v1/userinfo', {
@@ -118,6 +117,7 @@ export async function registerAuth(app, { db, env }) {
 
     return reply.redirect((env.BASE_PATH === '/' ? '' : (env.BASE_PATH || '')) + '/')
   })
+  }
 
   app.get('/me', async (req) => {
     return { ok: true, member: req.session.member || null }
