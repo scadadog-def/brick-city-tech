@@ -1,0 +1,73 @@
+name: Deploy Brick City Tech Development
+
+on:
+  push:
+    branches:
+      - develop
+  workflow_dispatch:
+
+concurrency:
+  group: brickcitytech-dev
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment: development
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build frontend
+        run: npm run build
+
+      - name: Setup SSH key
+        run: |
+          set -euxo pipefail
+          install -m 700 -d ~/.ssh
+          echo "${{ secrets.BCT_VPS_SSH_KEY }}" > ~/.ssh/id_rsa
+          sed -i 's/\r$//' ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -p "${{ secrets.BCT_VPS_PORT }}" "${{ secrets.BCT_VPS_HOST }}" >> ~/.ssh/known_hosts
+          ssh-keygen -lf ~/.ssh/id_rsa
+
+      - name: SSH connectivity debug
+        run: |
+          set -euxo pipefail
+          echo "TARGET=${{ secrets.BCT_VPS_USER }}@${{ secrets.BCT_VPS_HOST }}:${{ secrets.BCT_VPS_PORT }}"
+          ssh -vvv -i ~/.ssh/id_rsa -o IdentitiesOnly=yes -o BatchMode=yes -o StrictHostKeyChecking=yes -p "${{ secrets.BCT_VPS_PORT }}" "${{ secrets.BCT_VPS_USER }}@${{ secrets.BCT_VPS_HOST }}" 'echo AUTH_OK && whoami && hostname'
+
+      - name: Upload release bundle
+        run: |
+          set -euxo pipefail
+          tar --exclude='.git' --exclude='node_modules' --exclude='dist' -czf release.tgz .
+          ls -lh release.tgz
+          scp -vvv -i ~/.ssh/id_rsa -o IdentitiesOnly=yes -P "${{ secrets.BCT_VPS_PORT }}" release.tgz "${{ secrets.BCT_VPS_USER }}@${{ secrets.BCT_VPS_HOST }}:/tmp/brick-city-tech-dev-release.tgz"
+
+      - name: Deploy and restart stack
+        run: |
+          set -euxo pipefail
+          ssh -i ~/.ssh/id_rsa -o IdentitiesOnly=yes -p "${{ secrets.BCT_VPS_PORT }}" "${{ secrets.BCT_VPS_USER }}@${{ secrets.BCT_VPS_HOST }}" '
+            set -euo pipefail
+            APP_DIR="${{ secrets.BCT_VPS_APP_DIR }}"
+            mkdir -p "$APP_DIR"
+            tar -xzf /tmp/brick-city-tech-dev-release.tgz -C "$APP_DIR"
+            rm -f /tmp/brick-city-tech-dev-release.tgz
+
+            cd "$APP_DIR/deploy"
+            PUBLIC_BASE_URL="https://dev.brickcitytech.cloud" docker compose up -d --build --remove-orphans
+            docker compose ps
+          '
+
+      - name: Verify development health
+        run: |
+          curl -fsS --retry 8 --retry-all-errors --retry-delay 5 https://dev.brickcitytech.cloud/api/health
