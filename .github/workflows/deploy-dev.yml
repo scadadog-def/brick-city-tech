@@ -76,4 +76,5 @@ jobs:
 
       - name: Verify development health
         run: |
+          # Keep this explicit health gate so deploy reruns are easy to validate.
           curl -fsS --retry 8 --retry-all-errors --retry-delay 5 https://dev.brickcitytech.cloud/api/health
