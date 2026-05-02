@@ -35,7 +35,7 @@ export default function Home() {
                   JOIN THE COLLECTIVE
                 </Link>
                 <Link
-                  to="/ocala"
+                  to="/manifesto"
                   className="border-2 border-cyan-400 text-cyan-400 font-['Space_Grotesk'] font-bold uppercase px-8 py-4 hover:bg-cyan-400 hover:text-black transition-all"
                 >
                   SEE THE PLAN
@@ -88,10 +88,10 @@ export default function Home() {
             <div className="font-['Space_Grotesk'] text-[24px] font-semibold mt-2">Workshops</div>
             <div className="text-zinc-400 mt-1">Calendar, pricing, and agendas.</div>
           </Link>
-          <Link to="/ocala" className="bg-zinc-900/40 border border-zinc-800 p-8 hover:border-cyan-400 transition-colors">
-            <div className="font-mono text-zinc-500 text-xs">[ OCALA ]</div>
-            <div className="font-['Space_Grotesk'] text-[24px] font-semibold mt-2">Ocala’s Greatest Challenges</div>
-            <div className="text-zinc-400 mt-1">Problem statement + references.</div>
+          <Link to="/manifesto" className="bg-zinc-900/40 border border-zinc-800 p-8 hover:border-cyan-400 transition-colors">
+            <div className="font-mono text-zinc-500 text-xs">[ MANIFESTO ]</div>
+            <div className="font-['Space_Grotesk'] text-[24px] font-semibold mt-2">Local Plan + Challenges</div>
+            <div className="text-zinc-400 mt-1">Mission, local context, and references.</div>
           </Link>
           <Link to="/sponsors" className="bg-zinc-900/40 border border-zinc-800 p-8 hover:border-cyan-400 transition-colors">
             <div className="font-mono text-zinc-500 text-xs">[ SPONSORS ]</div>

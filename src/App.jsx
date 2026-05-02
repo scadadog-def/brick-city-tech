@@ -5,7 +5,6 @@ import Labs from './pages/Labs.jsx'
 import Events from './pages/Events.jsx'
 import Community from './pages/Community.jsx'
 import Manifesto from './pages/Manifesto.jsx'
-import Ocala from './pages/Ocala.jsx'
 import Sponsors from './pages/Sponsors.jsx'
 import Podcast from './pages/Podcast.jsx'
 import Blog from './pages/Blog.jsx'
@@ -97,7 +96,6 @@ export default function App() {
               <TopNavLink to="/">HOME</TopNavLink>
               <TopNavLink to="/events">EVENTS</TopNavLink>
               <TopNavLink to="/labs">LABS</TopNavLink>
-              <TopNavLink to="/ocala">OCALA</TopNavLink>
               <TopNavLink to="/manifesto">MANIFESTO</TopNavLink>
               <TopNavLink to="/sponsors">SPONSORS</TopNavLink>
               <TopNavLink to="/podcast">PODCAST</TopNavLink>
@@ -155,7 +153,6 @@ export default function App() {
             <Route path="/events" element={<Events />} />
             <Route path="/community" element={member ? <Community /> : <Home />} />
             <Route path="/labs" element={<Labs />} />
-            <Route path="/ocala" element={<Ocala />} />
             <Route path="/manifesto" element={<Manifesto />} />
             <Route path="/sponsors" element={<Sponsors />} />
             <Route path="/podcast" element={<Podcast />} />

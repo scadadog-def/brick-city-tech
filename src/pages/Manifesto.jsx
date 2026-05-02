@@ -58,7 +58,24 @@ export default function Manifesto() {
       </section>
 
       <section className="mb-20">
-        <SectionHeader title="Call to action" code="SEC_03" right="PARTICIPATE" />
+        <SectionHeader title="Ocala: next five years" code="SEC_04" right="LOCAL" />
+        <div className="bg-zinc-900/40 border border-zinc-800 p-8">
+          <ul className="list-disc pl-5 text-zinc-400 space-y-2">
+            <li><b className="text-zinc-100">Routine work is automated first.</b> Admin, scheduling, basic marketing, templated writing, and back-office work.</li>
+            <li><b className="text-zinc-100">Small businesses feel it fastest.</b> The market resets around speed, follow-up, and cost-per-output.</li>
+            <li><b className="text-zinc-100">Talent becomes the bottleneck.</b> Tools are cheap; capability is scarce.</li>
+            <li><b className="text-zinc-100">Income pressure vs. cost of living.</b> Marion County median household income is about $58.5k (2019 to 2023, USAFacts). MIT Living Wage (single adult) is about $21.23 per hour.</li>
+            <li><b className="text-zinc-100">Knowledge leakage and coordination costs.</b> Practical know-how and local solutions are repeatedly lost or rebuilt in isolation.</li>
+          </ul>
+          <div className="mt-5 text-sm">
+            <a className="text-cyan-400 underline mr-4" href="https://livingwage.mit.edu/counties/12083" target="_blank" rel="noreferrer">MIT Living Wage Calculator</a>
+            <a className="text-cyan-400 underline" href="https://usafacts.org/answers/what-is-the-income-of-a-us-household/county/marion-county-fl/" target="_blank" rel="noreferrer">USAFacts income data</a>
+          </div>
+        </div>
+      </section>
+
+      <section className="mb-20">
+        <SectionHeader title="Call to action" code="SEC_05" right="PARTICIPATE" />
         <div className="bg-zinc-900/40 border border-zinc-800 p-8 space-y-4 text-zinc-400">
           <p>This is not a passive effort. It requires participation.</p>
           <ul className="list-disc pl-5 space-y-2">
