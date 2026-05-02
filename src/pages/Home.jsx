@@ -1,12 +1,69 @@
-import { Link, Navigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { useMe } from '../components/useMe.js'
+
+function MembersHome() {
+  return (
+    <>
+      <section className="mb-10">
+        <div className="flex items-center gap-4 mb-2">
+          <span className="text-zinc-100 font-mono uppercase tracking-widest">/ MEMBERS / HOME</span>
+          <div className="h-px flex-grow bg-zinc-800" />
+        </div>
+        <h1 className="font-['Space_Grotesk'] text-[48px] leading-[1.1] tracking-[-0.02em] font-bold text-zinc-100 uppercase mb-4">
+          Members Area
+        </h1>
+        <p className="max-w-2xl text-zinc-400">Shows, events, and reservations live here. (We’ll keep expanding this.)</p>
+      </section>
+
+      <section className="grid grid-cols-1 md:grid-cols-2 gap-gutter mb-16">
+        <div className="bg-zinc-900/40 border border-zinc-800 p-8">
+          <div className="font-mono text-zinc-500 text-xs">[ UPCOMING ]</div>
+          <div className="font-['Space_Grotesk'] text-[24px] font-semibold mt-2">Shows</div>
+          <div className="text-zinc-400 mt-1">Browse upcoming shows and reserve when available.</div>
+          <div className="mt-6">
+            <Link
+              to="/events"
+              className="bg-cyan-400 text-black font-['Space_Grotesk'] font-bold uppercase px-6 py-3 active:translate-y-1 transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+            >
+              View events
+            </Link>
+          </div>
+        </div>
+
+        <div className="bg-zinc-900/40 border border-zinc-800 p-8">
+          <div className="font-mono text-zinc-500 text-xs">[ ACCESS ]</div>
+          <div className="font-['Space_Grotesk'] text-[24px] font-semibold mt-2">Reservations</div>
+          <div className="text-zinc-400 mt-1">Reserve seats / workshop spots (coming next).</div>
+          <div className="mt-6 text-zinc-500 font-mono text-xs">STATUS: UNDER CONSTRUCTION</div>
+        </div>
+      </section>
+    </>
+  )
+}
 
 export default function Home() {
   const { member } = useMe()
 
-  // Logged-in users should land in the members area, not the public CTA.
-  if (member?.status === 'pending') return <Navigate to="/verify-email-needed" replace />
-  if (member) return <Navigate to="/community" replace />
+  // One homepage: public for logged out, members view for logged in.
+  if (member?.status === 'pending') {
+    return (
+      <section className="max-w-2xl">
+        <div className="flex items-center gap-4 mb-2">
+          <span className="text-zinc-100 font-mono uppercase tracking-widest">/ MEMBER ACCESS</span>
+          <div className="h-px flex-grow bg-zinc-800" />
+        </div>
+        <h1 className="font-['Space_Grotesk'] text-[42px] leading-[1.1] tracking-[-0.02em] font-bold text-zinc-100 uppercase mb-4">
+          Verify your email
+        </h1>
+        <p className="text-zinc-400 mb-6">
+          Your account is created, but it’s still <span className="text-cyan-400">pending</span> until you verify your email.
+          Please click the verification link we emailed you.
+        </p>
+      </section>
+    )
+  }
+
+  if (member) return <MembersHome />
   return (
     <>
       <section className="relative mb-20">

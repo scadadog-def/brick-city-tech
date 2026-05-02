@@ -4,6 +4,7 @@ import { useMe } from './components/useMe.js'
 import Home from './pages/Home.jsx'
 import Labs from './pages/Labs.jsx'
 import Events from './pages/Events.jsx'
+// Community page deprecated: homepage switches between public and members view
 import Community from './pages/Community.jsx'
 import Manifesto from './pages/Manifesto.jsx'
 import Ocala from './pages/Ocala.jsx'
@@ -144,7 +145,7 @@ export default function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/events" element={<Events />} />
-            <Route path="/community" element={<Community />} />
+            <Route path="/community" element={<Home />} />
             <Route path="/labs" element={<Labs />} />
             <Route path="/ocala" element={<Ocala />} />
             <Route path="/manifesto" element={<Manifesto />} />
