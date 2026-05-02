@@ -9,7 +9,8 @@ const PORT = Number(process.env.PORT || 8787)
 const BASE_PATH = process.env.BASE_PATH || '/'
 const DATABASE_PATH = process.env.DATABASE_PATH || '/data/bct.sqlite'
 
-const app = Fastify({ logger: true })
+// Behind nginx reverse-proxy; trust X-Forwarded-* so secure cookies work over HTTPS.
+const app = Fastify({ logger: true, trustProxy: true })
 
 app.addContentTypeParser('application/json', { parseAs: 'string' }, function (req, body, done) {
   try {
