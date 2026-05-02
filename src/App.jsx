@@ -94,7 +94,6 @@ export default function App() {
             <nav className="hidden md:flex gap-3 lg:gap-5 items-center">
               <TopNavLink to="/">HOME</TopNavLink>
               <TopNavLink to="/events">EVENTS</TopNavLink>
-              <TopNavLink to="/community">COMMUNITY</TopNavLink>
               <TopNavLink to="/labs">LABS</TopNavLink>
               <TopNavLink to="/ocala">OCALA</TopNavLink>
               <TopNavLink to="/manifesto">MANIFESTO</TopNavLink>
@@ -150,9 +149,9 @@ export default function App() {
 
         <main className="max-w-7xl mx-auto px-6 py-12">
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={member ? <Community /> : <Home />} />
             <Route path="/events" element={<Events />} />
-            <Route path="/community" element={<Community />} />
+            <Route path="/community" element={member ? <Community /> : <Home />} />
             <Route path="/labs" element={<Labs />} />
             <Route path="/ocala" element={<Ocala />} />
             <Route path="/manifesto" element={<Manifesto />} />
@@ -194,10 +193,6 @@ export default function App() {
           <a className="flex flex-col items-center justify-center text-zinc-500 p-2 hover:text-cyan-300 active:scale-95 transition-all duration-75" href="/events">
             <span className="material-symbols-outlined">calendar_today</span>
             <span className="font-['Space_Grotesk'] font-medium text-[10px] uppercase tracking-tighter">EVENTS</span>
-          </a>
-          <a className="flex flex-col items-center justify-center text-zinc-500 p-2 hover:text-cyan-300 active:scale-95 transition-all duration-75" href="/community">
-            <span className="material-symbols-outlined">hub</span>
-            <span className="font-['Space_Grotesk'] font-medium text-[10px] uppercase tracking-tighter">COMMUNITY</span>
           </a>
           <a className="flex flex-col items-center justify-center text-zinc-500 p-2 hover:text-cyan-300 active:scale-95 transition-all duration-75" href="/labs">
             <span className="material-symbols-outlined">terminal</span>
