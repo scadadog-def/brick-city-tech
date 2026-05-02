@@ -36,6 +36,113 @@ export async function registerAuth(app, { db, env }) {
     },
   })
 
+  const githubEnabled = Boolean(env.GITHUB_CLIENT_ID && env.GITHUB_CLIENT_SECRET)
+  if (!githubEnabled) {
+    app.log.warn('GitHub OAuth not configured (missing GITHUB_CLIENT_ID/SECRET)')
+  } else {
+    const callbackUri = `${baseUrl}${basePath}/auth/github/callback`
+
+    await app.register(oauthPlugin, {
+      name: 'githubOAuth2',
+      scope: ['read:user', 'user:email'],
+      credentials: {
+        client: {
+          id: env.GITHUB_CLIENT_ID,
+          secret: env.GITHUB_CLIENT_SECRET,
+        },
+        auth: oauthPlugin.GITHUB_CONFIGURATION,
+      },
+      startRedirectPath: '/auth/github/start',
+      callbackUri,
+    })
+
+    app.get('/auth/github/callback', async function (req, reply) {
+      const token = await this.githubOAuth2.getAccessTokenFromAuthorizationCodeFlow(req)
+
+      const userRes = await fetch('https://api.github.com/user', {
+        headers: {
+          Authorization: `Bearer ${token.token.access_token}`,
+          'User-Agent': 'brick-city-tech',
+          Accept: 'application/vnd.github+json',
+        },
+      })
+
+      if (!userRes.ok) {
+        req.log.warn({ status: userRes.status }, 'failed to fetch github user')
+        return reply.code(401).send({ ok: false, error: 'github_userinfo_failed' })
+      }
+
+      const gh = await userRes.json()
+      const githubId = String(gh.id || '')
+      const githubUsername = gh.login ? String(gh.login) : null
+      const name = gh.name ? String(gh.name) : null
+
+      if (!githubId) return reply.code(401).send({ ok: false, error: 'invalid_github_identity' })
+
+      const emailRes = await fetch('https://api.github.com/user/emails', {
+        headers: {
+          Authorization: `Bearer ${token.token.access_token}`,
+          'User-Agent': 'brick-city-tech',
+          Accept: 'application/vnd.github+json',
+        },
+      })
+
+      if (!emailRes.ok) {
+        req.log.warn({ status: emailRes.status }, 'failed to fetch github emails')
+        return reply.code(401).send({ ok: false, error: 'github_emails_failed' })
+      }
+
+      const emails = await emailRes.json()
+      const chosen = Array.isArray(emails)
+        ? emails.find((e) => e?.primary && e?.verified) || emails.find((e) => e?.verified) || emails[0]
+        : null
+
+      const email = normEmail(chosen?.email)
+      if (!email) return reply.code(400).send({ ok: false, error: 'github_email_required' })
+
+      const now = new Date().toISOString()
+
+      // Link or create member
+      let member = db.prepare('select * from members where github_id = ?').get(githubId)
+
+      if (!member) {
+        member = db.prepare('select * from members where email = ?').get(email)
+
+        if (member) {
+          db.prepare(
+            `update members
+             set github_id = ?, github_username = ?, github_email = ?,
+                 name = coalesce(?, name),
+                 status = 'active',
+                 email_verified_at = coalesce(email_verified_at, ?),
+                 last_login_at = ?
+             where id = ?`,
+          ).run(githubId, githubUsername, email, name, now, now, member.id)
+        } else {
+          const id = randomId('mem_')
+          const isAdmin = allowlist.includes(email) ? 1 : 0
+          db.prepare(
+            `insert into members (id, created_at, email, name, role, is_admin, status, github_id, github_username, github_email, email_verified_at, last_login_at)
+             values (?,?,?,?,?,?,'active',?,?,?,?,?)`,
+          ).run(id, now, email, name, 'member', isAdmin, githubId, githubUsername, email, now, now)
+          member = db.prepare('select * from members where id = ?').get(id)
+        }
+      } else {
+        db.prepare('update members set last_login_at = ? where id = ?').run(now, member.id)
+      }
+
+      req.session.member = {
+        id: member.id,
+        email: member.email,
+        name: member.name,
+        is_admin: Boolean(member.is_admin),
+        status: member.status,
+      }
+
+      return reply.redirect((env.BASE_PATH === '/' ? '' : (env.BASE_PATH || '')) + '/')
+    })
+  }
+
   const googleEnabled = Boolean(env.GOOGLE_CLIENT_ID && env.GOOGLE_CLIENT_SECRET)
   if (!googleEnabled) {
     app.log.warn('Google OAuth not configured (missing GOOGLE_CLIENT_ID/SECRET)')
@@ -113,6 +220,7 @@ export async function registerAuth(app, { db, env }) {
       email: member.email,
       name: member.name,
       is_admin: Boolean(member.is_admin),
+      status: member.status,
     }
 
     return reply.redirect((env.BASE_PATH === '/' ? '' : (env.BASE_PATH || '')) + '/')
@@ -212,6 +320,7 @@ export async function registerAuth(app, { db, env }) {
       email: member.email,
       name: member.name,
       is_admin: Boolean(member.is_admin),
+      status: member.status,
     }
 
     return reply.redirect(basePath + '/')
@@ -279,6 +388,7 @@ export async function registerAuth(app, { db, env }) {
       email: member.email,
       name: member.name,
       is_admin: Boolean(member.is_admin),
+      status: member.status,
     }
 
     return { ok: true }
@@ -307,6 +417,7 @@ export async function registerAuth(app, { db, env }) {
       email: member.email,
       name: member.name,
       is_admin: Boolean(member.is_admin),
+      status: member.status,
     }
 
     return { ok: true, member: req.session.member }

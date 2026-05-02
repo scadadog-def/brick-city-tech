@@ -48,6 +48,16 @@ export default function Login() {
       <p className="text-zinc-400 mb-8">Use your email + password. If your account is pending, verify your email first.</p>
 
       <div className="bg-zinc-900/40 border border-zinc-800 p-8">
+        <div className="grid grid-cols-1 gap-3 mb-8">
+          <a
+            href="/auth/github/start"
+            className="border-2 border-zinc-700 text-zinc-200 font-['Space_Grotesk'] font-bold uppercase px-6 py-3 hover:bg-white hover:text-black transition-all text-center"
+          >
+            Login with GitHub
+          </a>
+          <div className="text-zinc-500 font-mono text-[11px] text-center">or</div>
+        </div>
+
         <form onSubmit={onSubmit} className="grid grid-cols-1 gap-6">
           <div>
             <div className="font-mono text-[12px] text-zinc-500 uppercase">Email</div>

@@ -36,4 +36,5 @@ export function ensureSchema(db) {
   apply('001_init', './migrations/001_init.sql')
   apply('002_blog', './migrations/002_blog.sql')
   apply('003_password_auth', './migrations/003_password_auth.sql')
+  apply('004_github_oauth', './migrations/004_github_oauth.sql')
 }
