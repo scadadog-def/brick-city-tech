@@ -126,5 +126,9 @@ export async function registerAuth(app, { db, env }) {
   }
 
   app.get('/me', async (req) => ({ ok: true, member: req.session.member || null }))
-  app.post('/auth/logout', async (req) => { req.session.delete(); return { ok: true } })
+  app.post('/auth/logout', async (req, reply) => {
+    req.session.delete()
+    reply.clearCookie('sessionId', { path: env.BASE_PATH || '/' })
+    return { ok: true }
+  })
 }

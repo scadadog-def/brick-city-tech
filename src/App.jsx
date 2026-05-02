@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Link, NavLink, Route, Routes } from 'react-router-dom'
+import { Link, NavLink, Route, Routes, useNavigate } from 'react-router-dom'
 import Home from './pages/Home.jsx'
 import Labs from './pages/Labs.jsx'
 import Events from './pages/Events.jsx'
@@ -34,6 +34,7 @@ function TopNavLink({ to, children }) {
 }
 
 export default function App() {
+  const navigate = useNavigate()
   const [member, setMember] = useState(null)
   const [loadingMember, setLoadingMember] = useState(true)
   const [menuOpen, setMenuOpen] = useState(false)
@@ -41,7 +42,7 @@ export default function App() {
   async function loadMember() {
     setLoadingMember(true)
     try {
-      const res = await fetch('/api/me', { credentials: 'include' })
+      const res = await fetch('/api/me', { credentials: 'include', cache: 'no-store' })
       const data = await res.json()
       if (res.ok && data?.ok) {
         setMember(data.member || null)
@@ -69,10 +70,11 @@ export default function App() {
 
   async function logout() {
     try {
-      await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' })
+      await fetch('/api/auth/logout', { method: 'POST', credentials: 'include', cache: 'no-store' })
     } finally {
       setMenuOpen(false)
       setMember(null)
+      navigate('/login')
       loadMember()
     }
   }
