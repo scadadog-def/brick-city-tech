@@ -64,14 +64,20 @@ jobs:
           set -euxo pipefail
           ssh -i ~/.ssh/id_rsa -o IdentitiesOnly=yes -p "${{ secrets.BCT_VPS_PORT }}" "${{ secrets.BCT_VPS_USER }}@${{ secrets.BCT_VPS_HOST }}" '
             set -euo pipefail
-            APP_DIR="${{ secrets.BCT_VPS_APP_DIR }}"
+            APP_DIR="${{ secrets.BCT_VPS_APP_DIR_DEV }}"
+            if [ -z "$APP_DIR" ]; then
+              APP_DIR="${{ secrets.BCT_VPS_APP_DIR }}/dev"
+            fi
             mkdir -p "$APP_DIR"
             tar -xzf /tmp/brick-city-tech-dev-release.tgz -C "$APP_DIR"
             rm -f /tmp/brick-city-tech-dev-release.tgz
 
             cd "$APP_DIR/deploy"
-            PUBLIC_BASE_URL="https://dev.brickcitytech.cloud" docker compose up -d --build --remove-orphans
-            docker compose ps
+            COMPOSE_PROJECT_NAME="brickcitytech-dev" \
+            WEB_PORT="${{ secrets.BCT_VPS_WEB_PORT_DEV }}" \
+            PUBLIC_BASE_URL="https://dev.brickcitytech.cloud" \
+            docker compose up -d --build --remove-orphans
+            COMPOSE_PROJECT_NAME="brickcitytech-dev" docker compose ps
           '
 
       - name: Verify development health

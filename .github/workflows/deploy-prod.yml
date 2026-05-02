@@ -70,8 +70,10 @@ jobs:
             rm -f /tmp/brick-city-tech-release.tgz
 
             cd "$APP_DIR/deploy"
+            COMPOSE_PROJECT_NAME="brickcitytech-prod" \
+            WEB_PORT="${{ secrets.BCT_VPS_WEB_PORT_PROD }}" \
             docker compose up -d --build --remove-orphans
-            docker compose ps
+            COMPOSE_PROJECT_NAME="brickcitytech-prod" docker compose ps
           '
 
       - name: Verify production health
