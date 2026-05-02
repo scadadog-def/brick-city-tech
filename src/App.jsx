@@ -181,26 +181,73 @@ export default function App() {
         </footer>
 
         <nav className="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center px-4 py-2 bg-zinc-950 border-t-2 border-zinc-800 z-50 backdrop-blur-md">
-          <a className="flex flex-col items-center justify-center bg-cyan-400 text-black p-2 scale-105 transition-transform" href="/">
+          <NavLink
+            to="/"
+            end
+            className={({ isActive }) =>
+              [
+                'flex flex-col items-center justify-center p-2 transition-all duration-75',
+                isActive
+                  ? 'bg-cyan-400 text-black scale-105'
+                  : 'text-zinc-500 hover:text-cyan-300 active:scale-95'
+              ].join(' ')
+            }
+          >
             <span className="material-symbols-outlined">home</span>
             <span className="font-['Space_Grotesk'] font-medium text-[10px] uppercase tracking-tighter">HOME</span>
-          </a>
-          <a className="flex flex-col items-center justify-center text-zinc-500 p-2 hover:text-cyan-300 active:scale-95 transition-all duration-75" href="/events">
+          </NavLink>
+
+          <NavLink
+            to="/events"
+            className={({ isActive }) =>
+              [
+                'flex flex-col items-center justify-center p-2 transition-all duration-75',
+                isActive ? 'text-cyan-300' : 'text-zinc-500 hover:text-cyan-300 active:scale-95'
+              ].join(' ')
+            }
+          >
             <span className="material-symbols-outlined">calendar_today</span>
             <span className="font-['Space_Grotesk'] font-medium text-[10px] uppercase tracking-tighter">EVENTS</span>
-          </a>
-          <a className="flex flex-col items-center justify-center text-zinc-500 p-2 hover:text-cyan-300 active:scale-95 transition-all duration-75" href="/community">
+          </NavLink>
+
+          <NavLink
+            to="/community"
+            className={({ isActive }) =>
+              [
+                'flex flex-col items-center justify-center p-2 transition-all duration-75',
+                isActive ? 'text-cyan-300' : 'text-zinc-500 hover:text-cyan-300 active:scale-95'
+              ].join(' ')
+            }
+          >
             <span className="material-symbols-outlined">hub</span>
             <span className="font-['Space_Grotesk'] font-medium text-[10px] uppercase tracking-tighter">COMMUNITY</span>
-          </a>
-          <a className="flex flex-col items-center justify-center text-zinc-500 p-2 hover:text-cyan-300 active:scale-95 transition-all duration-75" href="/labs">
+          </NavLink>
+
+          <NavLink
+            to="/labs"
+            className={({ isActive }) =>
+              [
+                'flex flex-col items-center justify-center p-2 transition-all duration-75',
+                isActive ? 'text-cyan-300' : 'text-zinc-500 hover:text-cyan-300 active:scale-95'
+              ].join(' ')
+            }
+          >
             <span className="material-symbols-outlined">terminal</span>
             <span className="font-['Space_Grotesk'] font-medium text-[10px] uppercase tracking-tighter">LABS</span>
-          </a>
-          <a className="flex flex-col items-center justify-center text-zinc-500 p-2 hover:text-cyan-300 active:scale-95 transition-all duration-75" href="/podcast">
+          </NavLink>
+
+          <NavLink
+            to="/podcast"
+            className={({ isActive }) =>
+              [
+                'flex flex-col items-center justify-center p-2 transition-all duration-75',
+                isActive ? 'text-cyan-300' : 'text-zinc-500 hover:text-cyan-300 active:scale-95'
+              ].join(' ')
+            }
+          >
             <span className="material-symbols-outlined">mic</span>
             <span className="font-['Space_Grotesk'] font-medium text-[10px] uppercase tracking-tighter">PODCAST</span>
-          </a>
+          </NavLink>
         </nav>
       </div>
     </div>
