@@ -221,7 +221,7 @@ export default function App() {
             }
           >
             <span className="material-symbols-outlined">hub</span>
-            <span className="font-['Space_Grotesk'] font-medium text-[10px] uppercase tracking-tighter">COMMUNITY</span>
+            <span className="font-['Space_Grotesk'] font-medium text-[10px] uppercase tracking-tighter">MEMBERS</span>
           </NavLink>
 
           <NavLink
