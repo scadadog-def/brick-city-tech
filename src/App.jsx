@@ -93,7 +93,7 @@ export default function App() {
             <nav className="hidden md:flex gap-3 lg:gap-5 items-center">
               <TopNavLink to="/">HOME</TopNavLink>
               <TopNavLink to="/events">EVENTS</TopNavLink>
-              <TopNavLink to="/community">COMMUNITY</TopNavLink>
+              <TopNavLink to="/community">MEMBERS</TopNavLink>
               <TopNavLink to="/labs">LABS</TopNavLink>
               <TopNavLink to="/ocala">OCALA</TopNavLink>
               <TopNavLink to="/manifesto">MANIFESTO</TopNavLink>
