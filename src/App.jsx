@@ -237,7 +237,7 @@ export default function App() {
           </NavLink>
 
           <NavLink
-            to="/podcast"
+            to="/manifesto"
             className={({ isActive }) =>
               [
                 'flex flex-col items-center justify-center p-2 transition-all duration-75',
@@ -245,8 +245,8 @@ export default function App() {
               ].join(' ')
             }
           >
-            <span className="material-symbols-outlined">mic</span>
-            <span className="font-['Space_Grotesk'] font-medium text-[10px] uppercase tracking-tighter">PODCAST</span>
+            <span className="material-symbols-outlined">flag</span>
+            <span className="font-['Space_Grotesk'] font-medium text-[10px] uppercase tracking-tighter">MANIFESTO</span>
           </NavLink>
         </nav>
       </div>
