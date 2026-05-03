@@ -95,13 +95,13 @@ export default function Manifesto() {
           </div>
           <div className="lg:col-span-5 border border-zinc-800 bg-zinc-900/20 overflow-hidden">
             <img
-              src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=1600&q=80"
-              alt="City street and people walking"
+              src="/manifesto/ocala-downtown-square.jpg"
+              alt="Downtown Ocala square"
               className="w-full h-full object-cover"
               loading="lazy"
             />
             <div className="p-4 bg-zinc-950/60 border-t border-zinc-800">
-              <div className="font-mono text-cyan-400 text-[11px] uppercase tracking-widest">Image source: Unsplash</div>
+              <div className="font-mono text-cyan-400 text-[11px] uppercase tracking-widest">Image source: City of Ocala</div>
             </div>
           </div>
         </div>
