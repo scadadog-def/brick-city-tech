@@ -19,14 +19,28 @@ const SPONSORS = [
     subtitle: 'Design + web + 3D + motion',
     href: 'https://synalgicstudios.com/',
     color: 'border-[#feb700]',
-    logo: null,
+    logo: '/sponsors/synalgic-studios-logo.webp',
     offers: [
       'Design team on demand (brand + web)',
       'Advanced design services (3D, motion, web)',
       'Cinematic, story-driven multi-page websites',
       'Support for generative arts workflows (music, art, film)'
     ],
-    note: 'Logo pending (site is Cloudflare-protected; please send the official logo file and I’ll add it).'
+    note: 'Helping local brands sharpen their visual identity and web presence.'
+  },
+  {
+    name: 'Electus Media',
+    subtitle: 'Design + development + consulting',
+    href: 'https://electus.media/',
+    color: 'border-[#f97316]',
+    logo: null,
+    offers: [
+      'UI/UX, product design, and data architecture',
+      'Website, app, frontend, and backend development',
+      'Process improvement, roadmapping, and launch consulting',
+      'Emerging tech support across AI, ML, blockchain, and IoT'
+    ],
+    note: 'Official logo pending; sponsor listing added while the final logo file is requested.'
   }
 ]
 
