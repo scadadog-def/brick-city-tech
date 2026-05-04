@@ -35,5 +35,21 @@ export function ensureSchema(db) {
 
   apply('001_init', './migrations/001_init.sql')
   apply('002_blog', './migrations/002_blog.sql')
+
+  // Back-compat: older deployments may already have these columns from a different migration id.
+  // If so, mark 003_auth as applied to avoid duplicate-column crashes.
+  const memberCols = new Set(
+    db
+      .prepare("select name from pragma_table_info('members')")
+      .all()
+      .map((r) => r.name),
+  )
+  if (memberCols.has('username') && memberCols.has('password_hash')) {
+    db.prepare('insert or ignore into migrations (id, created_at) values (?, ?)').run(
+      '003_auth',
+      new Date().toISOString(),
+    )
+  }
+
   apply('003_auth', './migrations/003_auth.sql')
 }
