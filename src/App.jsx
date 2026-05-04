@@ -8,6 +8,8 @@ import Manifesto from './pages/Manifesto.jsx'
 import Sponsors from './pages/Sponsors.jsx'
 import Podcast from './pages/Podcast.jsx'
 import Blog from './pages/Blog.jsx'
+import Portfolio from './pages/Portfolio.jsx'
+import PortfolioSpotless from './pages/PortfolioSpotless.jsx'
 import BlogPost from './pages/BlogPost.jsx'
 import Account from './pages/Account.jsx'
 import Admin from './pages/Admin.jsx'
@@ -97,6 +99,7 @@ export default function App() {
               <TopNavLink to="/events">EVENTS</TopNavLink>
               <TopNavLink to="/labs">LABS</TopNavLink>
               <TopNavLink to="/manifesto">MANIFESTO</TopNavLink>
+              <TopNavLink to="/portfolio">PORTFOLIO</TopNavLink>
               <TopNavLink to="/sponsors">SPONSORS</TopNavLink>
               <TopNavLink to="/podcast">PODCAST</TopNavLink>
               <TopNavLink to="/blog">BLOG</TopNavLink>
@@ -154,6 +157,9 @@ export default function App() {
             <Route path="/community" element={member ? <Community /> : <Home />} />
             <Route path="/labs" element={<Labs />} />
             <Route path="/manifesto" element={<Manifesto />} />
+            <Route path="/ocala" element={<Manifesto />} />
+            <Route path="/portfolio" element={<Portfolio />} />
+            <Route path="/portfolio/spotless-home-repair" element={<PortfolioSpotless />} />
             <Route path="/sponsors" element={<Sponsors />} />
             <Route path="/podcast" element={<Podcast />} />
             <Route path="/blog" element={<Blog />} />
