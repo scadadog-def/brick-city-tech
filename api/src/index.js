@@ -3,7 +3,7 @@ import { ensureSchema, openDb } from './db.js'
 import { registerPodcastRoutes } from './podcast.js'
 import { registerBlogRoutes } from './blog.js'
 import { registerMemberRoutes } from './members.js'
-import { registerAuth } from './auth.js'
+import { registerAuth } from './auth_local.js'
 
 const PORT = Number(process.env.PORT || 8787)
 const BASE_PATH = process.env.BASE_PATH || '/'

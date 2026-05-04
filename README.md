@@ -1,16 +1,88 @@
-# React + Vite
+# Brick City Tech
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This repo contains the Brick City Tech website (React/Vite) and the backend API (Fastify + SQLite) used for memberships, blog/podcast content, and admin workflows.
 
-Currently, two official plugins are available:
+## Quickstart (local dev)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Web
 
-## React Compiler
+```bash
+npm ci
+npm run dev
+```
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### API
 
-## Expanding the ESLint configuration
+```bash
+cd api
+npm ci
+# configure env vars as needed (see deploy/.env.example)
+node src/index.js
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Branching + contribution workflow
+
+We use a simple 2-branch promotion model:
+
+- **feature/** branches → PR into **develop**
+- **develop** → PR into **main** when ready to ship
+- **main** is the only branch that deploys **production**
+
+### Branch naming
+
+Use one of:
+- `feat/<short-name>`
+- `fix/<short-name>`
+- `chore/<short-name>`
+- `copy/<short-name>`
+- `ci/<short-name>`
+
+### Commit message convention
+
+Use conventional/semantic prefixes:
+- `feat:` new capability
+- `fix:` bug fix
+- `chore:` maintenance
+- `ci:` pipeline changes
+- `copy:` text/copy edits
+- `ui:` UI-only tweaks
+
+Example:
+
+```bash
+git checkout -b feat/password-auth
+# ...make changes...
+git commit -m "feat(auth): add pending registration"
+```
+
+## CI (GitHub Actions)
+
+A CI workflow runs automatically to prevent broken code from merging.
+
+### When CI runs
+- On **pull requests targeting `develop`**
+- On **pushes to `develop`**
+
+### What CI checks
+- **Web:** `npm ci`, `npm run lint`, `npm run build`
+- **API:** `npm ci` (in `api/`) then `npm run check`
+
+If CI fails, fix the errors in your branch and push again; the PR will update.
+
+## Deployments
+
+### Production
+Production deployments are triggered by GitHub Actions on:
+- `push` to `main`
+
+The deploy workflow packages the repo and deploys it to the production VPS, then rebuilds/restarts the Docker Compose stack.
+
+### Development (recommended)
+Development deployments should run from `develop` or feature branches (separate host/stack), and should not affect production.
+
+## Environment variables
+
+See:
+- `deploy/.env.example`
+
+Never commit real secrets. Use `.env` on servers and GitHub Secrets for CI/CD.
