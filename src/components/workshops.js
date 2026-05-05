@@ -1,6 +1,8 @@
 export const WORKSHOPS_2026 = [
   {
     month: 'May',
+    // ISO date used for the simple calendar view
+    date: '2026-05-16',
     title: 'AI Basics for Working Adults (No-Code + Safety)',
     price: '$25',
     audience: 'Adults / job-switchers / small business staff',
@@ -15,6 +17,7 @@ export const WORKSHOPS_2026 = [
   },
   {
     month: 'Jun',
+    date: '2026-06-13',
     title: 'Small Business AI Upgrade Clinic (Ops + Marketing)',
     price: '$50',
     audience: 'Local business owners/operators',
@@ -29,6 +32,7 @@ export const WORKSHOPS_2026 = [
   },
   {
     month: 'Jul',
+    date: '2026-07-11',
     title: 'Robotics, 3D Printing & Micro-Manufacturing Build Night (Youth + Families)',
     price: '$10',
     audience: 'Youth (with guardian) + families',
@@ -43,6 +47,7 @@ export const WORKSHOPS_2026 = [
   },
   {
     month: 'Aug',
+    date: '2026-08-15',
     title: 'Generative Arts Lab (Music / Art / Film) with Synalgic Studios',
     price: '$25',
     audience: 'Artists, creators, students, and curious builders',
@@ -57,6 +62,7 @@ export const WORKSHOPS_2026 = [
   },
   {
     month: 'Sep',
+    date: '2026-09-12',
     title: 'Community Problem-Solving Hack Session (Infrastructure + Safety)',
     price: 'Free',
     audience: 'Builders, students, civic partners',
@@ -71,6 +77,7 @@ export const WORKSHOPS_2026 = [
   },
   {
     month: 'Oct',
+    date: '2026-10-10',
     title: 'AI for Agriculture & Land Stewardship (Practical)',
     price: '$25',
     audience: 'Farmers, landowners, ag support businesses',
@@ -85,6 +92,7 @@ export const WORKSHOPS_2026 = [
   },
   {
     month: 'Nov',
+    date: '2026-11-14',
     title: 'Brick City Tech Showcase Night (Demo Day)',
     price: 'Free',
     audience: 'Community-wide',
