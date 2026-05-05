@@ -20,6 +20,21 @@ npm ci
 node src/index.js
 ```
 
+## Collaboration (issues + PRs)
+
+We coordinate work via **GitHub Issues** and **Pull Requests**:
+
+- Before starting a new feature/change, create (or confirm) a **GitHub Issue**.
+- Work happens on a branch and is delivered via a **PR targeting `develop`**.
+- PR descriptions should reference the issue (e.g. `Closes #123`).
+- Collaborators with **Write** access are encouraged to:
+  - pick up issues,
+  - propose approaches in issue comments,
+  - open PRs,
+  - review other PRs and leave constructive feedback.
+
+This keeps work delegated and parallelizable while maintaining a clean deployment path.
+
 ## Branching + contribution workflow
 
 We use a simple 2-branch promotion model:
